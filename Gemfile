@@ -1,3 +1,5 @@
+ruby '2.3.4'
+
 gem 'sinatra'
 gem 'rerun'
 gem 'rqrcode', '~> 0.10.1'
