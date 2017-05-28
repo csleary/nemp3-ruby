@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+body {
+  background-color: #fafafa;
+}
+
+.title {
+  color: #666;
+  font-family: 'Roboto', sans-serif;
+  font-size: 6rem;
+  text-shadow: 4px 4px 0 #41ce7c, 8px 8px 0 #5ab3e8;
+}
+
+a, a:hover, a:active, a:visited {
+  color: #5ab3e8;
+  font-weight: bold;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.btn {
+  margin-top: 1rem;
+}
+
+.btn-outline-primary {
+  color: #5ab3e8;
+  border-color: #5ab3e8;
+}
+
+.btn-outline-primary:hover {
+  color: #fff;
+  cursor: pointer;
+  background-color: #5ab3e8;
+  border-color: #5ab3e8;
+}
+
+.btn-outline-success {
+  color: #41ce7c;
+  border-color: #41ce7c;
+}
+
+.btn-outline-success:hover {
+  color: #fff;
+  cursor: pointer;
+  background-color: #41ce7c;
+  border-color: #41ce7c;
+}
+
+.container,
+.row,
+footer {
+  padding-top: 1rem;
+}
+
+.payment-address,
+.payment-message {
+  background: #efefef;
+  border: 2px solid #999;
+  border-radius: 0;
+  font-size: 1rem;
+  font-weight: bold;
+  overflow: hidden;
+  text-align: center;
+  width: 100%;
+  -webkit-appearance: none;
+}
+
+.qr-code {
+  margin: 1rem auto;
+  max-width: 276px;
+}
+
+.email-form {
+  margin: 2rem 0;
+}
+
+.email {
+  font-size: 2rem;
+  padding: .75rem 1.5rem;
+  text-align: center;
+}
+
+.node-name {
+  font-weight: bold;
+}

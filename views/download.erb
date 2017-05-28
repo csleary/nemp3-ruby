@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col-lg-8 offset-lg-2">
+    <h2>Download</h2>
+    <p>
+      Checking to see if your transaction has made it to the blockchain&hellip;
+    </p>
+    <p class="alert alert-info" role="alert">
+      Connected to node: <span class="node-name"><%= @node_name %></span>
+    </p>
+    <p>
+      Looking for your personalised purchase ID:<br>
+      <strong><%= @hash %></strong>
+    </p>
+    <%= @tx_message %>
+    <p>
+      <% @tx_list.each_with_index do |tx, index| %>
+      <%= "#{index + 1}. <a href='http://bob.nem.ninja:8765/#/transfer/#{tx}'>#{tx}</a>" %><br>
+      <% end %>
+    </p>
+    <%= @button %>
+  </div>
+</div>
