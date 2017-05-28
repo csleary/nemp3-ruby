@@ -83,5 +83,5 @@ post '/download' do
 end
 
 post "/:dl_link" do
-  redirect '11d5284c4b5c2ec9/album.zip'
+  redirect '/album.zip'
 end
