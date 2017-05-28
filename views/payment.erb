@@ -11,13 +11,13 @@
       Alternatively, you can manually send your payment to this address:
     </p>
     <p>
-      <textarea class="payment-address" onclick="this.select()" readonly="readonly">TCQFU2-U2UR27-EYLADA-6FNE6K-Y7ONFM-7YH7ZY-REBS</textarea>
+      <textarea class="payment-address" onclick="this.select()" readonly="readonly" rows="1">TCQFU2-U2UR27-EYLADA-6FNE6K-Y7ONFM-7YH7ZY-REBS</textarea>
     </p>
     <p>
       You <strong>must</strong> include the hash below in the message field when making payment, as it's essentially your purchase ID, linked to your email address, and stored in the blockchain as part of your transaction. This will be used to confirm that your purchase has successfully been made. It will take a minute for your payment to be confirmed by nodes on the network.
     </p>
     <p>
-      <textarea class="payment-message" onclick="this.select()" readonly="readonly"><%= @hash %></textarea>
+      <textarea class="payment-message" onclick="this.select()" readonly="readonly" rows="1"><%= @hash %></textarea>
     </p>
     <p>
       All done? If your payment has been confirmed, please continue.

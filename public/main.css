@@ -66,6 +66,7 @@ footer {
   font-size: 1rem;
   font-weight: bold;
   overflow: hidden;
+  padding: .5rem 0;
   text-align: center;
   width: 100%;
   -webkit-appearance: none;
