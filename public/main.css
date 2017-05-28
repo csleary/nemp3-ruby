@@ -4,6 +4,10 @@ body {
   background-color: #fafafa;
 }
 
+footer {
+  min-height: 5rem;
+}
+
 .title {
   color: #666;
   font-family: 'Roboto', sans-serif;
@@ -84,4 +88,9 @@ footer {
 
 .node-name {
   font-weight: bold;
+}
+
+.id-hash,
+.tx-list {
+  overflow: auto;
 }
