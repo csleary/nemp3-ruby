@@ -93,5 +93,5 @@ footer {
 
 .id-hash,
 .tx-list {
-  overflow: scroll;
+  overflow: auto;
 }
