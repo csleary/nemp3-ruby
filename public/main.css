@@ -30,6 +30,7 @@ a:hover {
 
 .btn-outline-primary {
   color: #5ab3e8;
+  background-color: #fff;
   border-color: #5ab3e8;
 }
 
@@ -42,6 +43,7 @@ a:hover {
 
 .btn-outline-success {
   color: #41ce7c;
+  background-color: #fff;
   border-color: #41ce7c;
 }
 
@@ -94,4 +96,11 @@ footer {
 .id-hash,
 .tx-list {
   overflow: auto;
+}
+
+@media (min-width: 768px) {
+  .payment-address,
+  .payment-message {
+    height: 2.8rem;
+  }
 }
