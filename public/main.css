@@ -15,6 +15,10 @@ footer {
   text-shadow: 4px 4px 0 #41ce7c, 8px 8px 0 #5ab3e8;
 }
 
+h2, h3 {
+  margin-bottom: 1rem;
+}
+
 a, a:hover, a:active, a:visited {
   color: #5ab3e8;
   font-weight: bold;
@@ -75,7 +79,7 @@ footer {
 }
 
 .qr-code {
-  margin: 1rem auto;
+  margin: 2rem auto;
   max-width: 276px;
 }
 
