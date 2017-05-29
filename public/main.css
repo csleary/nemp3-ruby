@@ -96,6 +96,7 @@ footer {
 .id-hash,
 .tx-list {
   overflow: auto;
+  white-space: nowrap;
 }
 
 @media (min-width: 768px) {
