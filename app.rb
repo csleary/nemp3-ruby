@@ -56,7 +56,7 @@ post '/download' do
   if @search.empty?
     @tx_message = <<-EOM
     <p class="alert alert-danger" role="alert">
-      Error! Could not find your transaction. Are you sure it's confirmed?
+      Error! Could not find your transaction. Are you sure it's confirmed? Feel free to refresh this page once it's gone through.
     </p>
     <p>
       You can either hit the back button to see the payment info again, or <a href="/">start over</a>.
