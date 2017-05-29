@@ -58,30 +58,32 @@ post '/download' do
       You can either hit the back button to see the payment info again, or <a href="/">start over</a>.
     </p>
     EOM
-    @button = nil
-  else
+    @download_button = nil
+  else # TODO Add price check 'if' before serving button.
     @search.each_with_index do |i, index|
       @tx_list[index] = i['meta']['hash']['data']
     end
     @tx_message = <<-EOM
     <p class="alert alert-success" role="alert">
-    Success! Transaction(s) found:
+      Success! Transaction(s) found:
     </p>
     EOM
-    @dl_link = Digest::SHA256.hexdigest DateTime.now.strftime('%s')
-    @button = <<-EOM
+    @download_link = Digest::SHA256.hexdigest DateTime.now.strftime('%s')
+    @download_button = <<-EOM
     <p>
-    <form class="" action="/#{@dl_link}" method="post">
-    <input type="hidden" name="dl_link" value="#{@dl_link}">
-    <button type="submit" class="btn btn-outline-success btn-lg btn-block">Download Album</button>
-    </form>
-    </p>
+      <form class="" action="/#{@download_link}" method="post">
+        <input type="hidden" name="dl_link" value="#{@download_link}">
+        <button type="submit" class="btn btn-outline-success btn-lg btn-block">Download Album</button>
+      </form>
+      </p>
     EOM
   end
 
   erb :download
 end
 
-post "/:dl_link" do
-  redirect '/album.zip'
+post "/:download_link" do
+  send_file File.join(settings.public_folder, 'b990f5bcf64e5c04d25112b1.zip'),
+  :type => :zip,
+  :filename => 'hi.zip'
 end
