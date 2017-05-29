@@ -10,6 +10,8 @@ helpers do
   alias_method :h, :escape_html
 end
 
+set :price, 30
+
 get '/' do
   erb :index
 end
@@ -22,7 +24,7 @@ post '/' do
     type: 2,
     data: {
       addr: payment_address,
-      amount: 30000000, # i.e. 30 XEM.
+      amount: settings.price * 1000000,
       msg: @hash
     }
   }
@@ -46,9 +48,11 @@ post '/download' do
   data = JSON.parse(transfers)['data']
 
   @hash = params[:hash]
-  @encoded_message = @hash.unpack('H*') # Now to search 'data' for the hex message.
+  @encoded_message = @hash.unpack('H*')
   @search = data.find_all { |i| i['transaction']['message']['payload'] == @encoded_message[0] }
   @tx_list = Array.new
+  @paid = Array.new
+
   if @search.empty?
     @tx_message = <<-EOM
     <p class="alert alert-danger" role="alert">
@@ -59,24 +63,38 @@ post '/download' do
     </p>
     EOM
     @download_button = nil
-  else # TODO Add price check 'if' before serving button.
+  else
     @search.each_with_index do |i, index|
       @tx_list[index] = i['meta']['hash']['data']
+      @paid << i['transaction']['amount']
     end
-    @tx_message = <<-EOM
-    <p class="alert alert-success" role="alert">
-      Success! Transaction(s) found:
-    </p>
-    EOM
-    @download_link = Digest::SHA256.hexdigest DateTime.now.strftime('%s')
-    @download_button = <<-EOM
-    <p>
-      <form class="" action="/#{@download_link}" method="post">
+    @paid = @paid.sum.to_f / 1000000
+    @difference = settings.price - @paid
+    if @paid < settings.price
+      @tx_message = <<-EOM
+      <p class="alert alert-warning" role="alert">
+        We successfully found your transaction(s), but unfortunately it seems you haven't quite met the payment price of #{settings.price} XEM. You've currently paid <strong>#{sprintf "%.2f", @paid} XEM</strong> to date, so please send an extra <strong>#{sprintf "%.2f", @difference} XEM</strong> using the same address, and return for your download. Thanks!
+      </p>
+      <p>
+        Transaction(s) found:
+      </p>
+      EOM
+    else
+      @tx_message = <<-EOM
+      <p class="alert alert-success" role="alert">
+        Success! Transaction(s) found (<strong>#{sprintf "%.2f", @paid} XEM</strong> paid to date):
+      </p>
+      EOM
+      @download_link = Digest::SHA256.hexdigest DateTime.now.strftime('%s')
+      @download_button = <<-EOM
+      <p>
+        <form class="" action="/#{@download_link}" method="post">
         <input type="hidden" name="dl_link" value="#{@download_link}">
         <button type="submit" class="btn btn-outline-success btn-lg btn-block">Download Album</button>
-      </form>
+        </form>
       </p>
-    EOM
+      EOM
+    end
   end
 
   erb :download
