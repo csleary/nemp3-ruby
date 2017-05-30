@@ -1,12 +1,10 @@
 <h2>Download</h2>
 <%= erb :node_name %>
 <p class="alert alert-success" role="alert">
-  Success! Transaction(s) found (<strong><%= sprintf "%.2f", @paid %> XEM</strong> paid to date):
+  Success! <%= @transaction.capitalize %> found (<strong><%= sprintf "%.2f", @paid %> XEM</strong> paid to date):
 </p>
 <%= erb :tx_list %>
-<p>
-  <form class="" action="/<%= @download_link %>" method="post">
-    <input type="hidden" name="dl_link" value="<%= @download_link %>">
-    <button type="submit" class="btn btn-outline-success btn-lg btn-block">Download Album</button>
-  </form>
-</p>
+<form class="" action="/<%= @download_link %>" method="post">
+  <input type="hidden" name="dl_link" value="<%= @download_link %>">
+  <button type="submit" class="btn btn-outline-success btn-lg btn-block">Download Album</button>
+</form>

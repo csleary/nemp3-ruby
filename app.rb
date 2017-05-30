@@ -52,6 +52,7 @@ post '/download' do
   @search = data.find_all { |i| i['transaction']['message']['payload'] == @encoded_message[0] }
   @tx_list = Array.new
   @paid = Array.new
+  @search.count > 1 ? @transaction = "transactions" : @transaction = "transaction"
 
   if @search.empty?
     erb :not_found

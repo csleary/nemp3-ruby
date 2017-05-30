@@ -96,7 +96,7 @@ footer {
 
 .id-hash,
 .tx-list {
-  overflow: ellipsis;
+  overflow: auto;
   white-space: nowrap;
 }
 
