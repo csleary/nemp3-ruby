@@ -57,7 +57,7 @@ post '/download' do
   @search.count > 1 ? @transaction = "transactions" : @transaction = "transaction"
 
   if @search.empty?
-    erb :not_found
+    erb :tx_not_found
   else
     @search.each_with_index do |i, index|
       @tx_list[index] = i['meta']['hash']['data']
