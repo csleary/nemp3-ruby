@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('https://fonts.googleapis.com/css?family=Righteous');
 
 body {
   background-color: #fafafa;
@@ -10,7 +10,7 @@ footer {
 
 .title {
   color: #666;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Righteous', sans-serif;
   font-size: 6rem;
   text-shadow: 4px 4px 0 #41ce7c, 8px 8px 0 #5ab3e8;
 }
@@ -25,7 +25,12 @@ a, a:hover, a:active, a:visited, a:focus {
   text-decoration: none;
 }
 
+.form-control {
+  border-radius: .3rem;
+}
+
 .btn {
+  border-width: 2px;
   margin-top: 1rem;
 }
 
@@ -65,7 +70,7 @@ footer {
 .payment-message {
   background: #efefef;
   border: 2px solid #999;
-  border-radius: 0;
+  border-radius: .3rem;
   font-size: 1rem;
   font-weight: bold;
   overflow: hidden;
@@ -85,6 +90,7 @@ footer {
 }
 
 .email {
+  border-width: 2px;
   font-size: 2rem;
   padding: .75rem 1.5rem;
   text-align: center;
