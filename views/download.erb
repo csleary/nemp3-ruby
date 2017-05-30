@@ -1,22 +1,12 @@
-<div class="row">
-  <div class="col-lg-8 offset-lg-2">
-    <h2>Download</h2>
-    <p>
-      Checking to see if your transaction has made it to the blockchain&hellip;
-    </p>
-    <p class="alert alert-info" role="alert">
-      Connected to node: <span class="node-name"><%= @node_name %></span>
-    </p>
-    <p class="id-hash">
-      Looking for your personalised purchase ID:<br>
-      <%= @hash %>
-    </p>
-    <%= @tx_message %>
-    <p class="tx-list">
-      <% @tx_list.each_with_index do |tx, index| %>
-      <%= "#{index + 1}. <a href='http://bob.nem.ninja:8765/#/transfer/#{tx}'>#{tx}</a>" %><br>
-      <% end %>
-    </p>
-    <%= @download_button %>
-  </div>
-</div>
+<h2>Download</h2>
+<%= erb :node_name %>
+<p class="alert alert-success" role="alert">
+  Success! Transaction(s) found (<strong><%= sprintf "%.2f", @paid %> XEM</strong> paid to date):
+</p>
+<%= erb :tx_list %>
+<p>
+  <form class="" action="/<%= @download_link %>" method="post">
+    <input type="hidden" name="dl_link" value="<%= @download_link %>">
+    <button type="submit" class="btn btn-outline-success btn-lg btn-block">Download Album</button>
+  </form>
+</p>

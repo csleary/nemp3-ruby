@@ -1,0 +1,12 @@
+<h2>Download</h2>
+<%= erb :node_name %>
+<p class="alert alert-warning" role="alert">
+  We successfully found your transaction(s), but unfortunately it seems you haven't quite met the payment price of <%= settings.price %> XEM. You've currently paid <strong><%= sprintf "%.2f", @paid %> XEM</strong> to date, so please send an extra <strong><%= sprintf "%.2f", @difference %> XEM</strong> using the same address, and return for your download. Thanks!
+</p>
+<p>
+  Transaction(s) found:
+</p>
+<%= erb :tx_list %>
+<p>
+  You can either hit the back button to see the payment info again, or <a href="/">start over</a>.
+</p>

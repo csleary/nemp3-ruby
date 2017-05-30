@@ -19,12 +19,9 @@ h2, h3 {
   margin-bottom: 1rem;
 }
 
-a, a:hover, a:active, a:visited {
+a, a:hover, a:active, a:visited, a:focus {
   color: #5ab3e8;
   font-weight: bold;
-}
-
-a:hover {
   text-decoration: none;
 }
 
@@ -99,7 +96,7 @@ footer {
 
 .id-hash,
 .tx-list {
-  overflow: auto;
+  overflow: ellipsis;
   white-space: nowrap;
 }
 

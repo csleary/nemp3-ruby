@@ -11,6 +11,7 @@ helpers do
 end
 
 set :price, 30
+set :payment_address, "TCQFU2U2UR27EYLADA6FNE6KY7ONFM7YH7ZYREBS"
 
 get '/' do
   erb :index
@@ -18,12 +19,11 @@ end
 
 post '/' do
   @hash = Digest::SHA256.hexdigest params[:user_email].to_s
-  payment_address = "TCQFU2U2UR27EYLADA6FNE6KY7ONFM7YH7ZYREBS"
   payment_data = {
     v: 2,
     type: 2,
     data: {
-      addr: payment_address,
+      addr: settings.payment_address,
       amount: settings.price * 1000000,
       msg: @hash
     }
@@ -35,6 +35,7 @@ post '/' do
   color: '000',
   shape_rendering: 'crispEdges',
   module_size: 4)
+
   erb :payment
 end
 
@@ -43,8 +44,7 @@ post '/download' do
   node_status = Net::HTTP.get(URI("#{node}/node/info"))
   @node_name = JSON.parse(node_status)['identity']['name']
 
-  payment_address = "TCQFU2U2UR27EYLADA6FNE6KY7ONFM7YH7ZYREBS"
-  transfers = Net::HTTP.get(URI("#{node}/account/transfers/incoming?address=#{payment_address}"))
+  transfers = Net::HTTP.get(URI("#{node}/account/transfers/incoming?address=#{settings.payment_address}"))
   data = JSON.parse(transfers)['data']
 
   @hash = params[:hash]
@@ -54,15 +54,7 @@ post '/download' do
   @paid = Array.new
 
   if @search.empty?
-    @tx_message = <<-EOM
-    <p class="alert alert-danger" role="alert">
-      Error! Could not find your transaction. Are you sure it's confirmed? Feel free to refresh this page once it's gone through.
-    </p>
-    <p>
-      You can either hit the back button to see the payment info again, or <a href="/">start over</a>.
-    </p>
-    EOM
-    @download_button = nil
+    erb :not_found
   else
     @search.each_with_index do |i, index|
       @tx_list[index] = i['meta']['hash']['data']
@@ -71,33 +63,12 @@ post '/download' do
     @paid = @paid.sum.to_f / 1000000
     @difference = settings.price - @paid
     if @paid < settings.price
-      @tx_message = <<-EOM
-      <p class="alert alert-warning" role="alert">
-        We successfully found your transaction(s), but unfortunately it seems you haven't quite met the payment price of #{settings.price} XEM. You've currently paid <strong>#{sprintf "%.2f", @paid} XEM</strong> to date, so please send an extra <strong>#{sprintf "%.2f", @difference} XEM</strong> using the same address, and return for your download. Thanks!
-      </p>
-      <p>
-        Transaction(s) found:
-      </p>
-      EOM
+      erb :low_payment
     else
-      @tx_message = <<-EOM
-      <p class="alert alert-success" role="alert">
-        Success! Transaction(s) found (<strong>#{sprintf "%.2f", @paid} XEM</strong> paid to date):
-      </p>
-      EOM
       @download_link = Digest::SHA256.hexdigest DateTime.now.strftime('%s')
-      @download_button = <<-EOM
-      <p>
-        <form class="" action="/#{@download_link}" method="post">
-        <input type="hidden" name="dl_link" value="#{@download_link}">
-        <button type="submit" class="btn btn-outline-success btn-lg btn-block">Download Album</button>
-        </form>
-      </p>
-      EOM
+      erb :download
     end
   end
-
-  erb :download
 end
 
 post "/:download_link" do
