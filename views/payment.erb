@@ -1,6 +1,6 @@
 <h2>Payment</h2>
 <p>
-  Great! Please send your XEM payment to the address encoded in the QR code below. The default value is <strong><%= settings.price %> XEM</strong>, but you can pay any amount, obviously. Pay less than <%= settings.price %> and your download will be rejected, but you can make up the difference by sending extra (it's a chance to see if my minimum price checking mechanism works!)
+  Great! Please send your XEM payment to the address encoded in the QR code below. The default value is <strong><%= settings.price %> XEM</strong>, but you can pay any amount, obviously. Pay less than <%= settings.price %> and your download will not be available, but you can always make up the shortfall in separate payments (you'll be advised on the exact value left to pay when we check for your payments, in the next step).
 </p>
 <div class="qr-code">
   <%= @qr %>
@@ -12,7 +12,7 @@
   <textarea class="payment-address" onclick="this.select()" readonly="readonly" rows="2">TCQFU2-U2UR27-EYLADA-6FNE6K-Y7ONFM-7YH7ZY-REBS</textarea>
 </p>
 <p>
-  You <strong>must</strong> include the hash below in the message field when making payment, as it's essentially your purchase ID, linked to your email address, and stored in the blockchain as part of your transaction. This will be used to confirm that your purchase has successfully been made. It will take a minute for your payment to be confirmed by nodes on the network.
+  You <strong>must</strong> include the hash below in the message field when making payment, as it's your unique purchase ID, linked to your email address, and stored on the blockchain as part of your transaction. This will be used to confirm that your purchase has successfully been made. It may take a minute for your payment to be confirmed by nodes on the network.
 </p>
 <p>
   <textarea class="payment-message" onclick="this.select()" readonly="readonly" rows="2"><%= @hash %></textarea>
