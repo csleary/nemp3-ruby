@@ -10,6 +10,8 @@ helpers do
   alias_method :h, :escape_html
 end
 
+set :root, File.dirname(__FILE__)
+set :downloads, File.join(settings.root, "downloads")
 set :price, 30
 set :payment_address, "TCQFU2U2UR27EYLADA6FNE6KY7ONFM7YH7ZYREBS"
 
@@ -73,7 +75,11 @@ post '/download' do
 end
 
 post "/:download_link" do
-  send_file File.join(settings.public_folder, 'b990f5bcf64e5c04d25112b1.zip'),
+  send_file File.join(settings.downloads, 'b990f5bcf64e5c04d25112b1.zip'),
   :type => :zip,
   :filename => 'hi.zip'
+end
+
+not_found do
+  erb :'404'
 end
