@@ -4,6 +4,7 @@ require 'json'
 require 'digest'
 require 'rqrcode'
 require 'date'
+require 'aws-sdk'
 
 helpers do
   include Rack::Utils
@@ -11,23 +12,42 @@ helpers do
 end
 
 set :root, File.dirname(__FILE__)
-set :downloads, File.join(settings.root, "downloads")
 set :price, 30
-set :payment_address, "TCQFU2U2UR27EYLADA6FNE6KY7ONFM7YH7ZYREBS"
+set :payment_address, "NBCR2G-JL7VJF-3FKVI6-6SMZCG-4YBC6H-3BM2A6-LLTM"
+set :nem_node, URI("http://85.25.36.97:7890")
 
 get '/' do
+  xem_price_btc = Net::HTTP.get_response(URI("https://bittrex.com/api/v1.1/public/getticker?market=btc-xem"))
+  if xem_price_btc.kind_of? Net::HTTPSuccess
+    @xem_price_satoshis = (JSON.parse(xem_price_btc.body)['result']['Last'] * 10**8).to_i
+  else
+    @xem_price_satoshis = 8500
+  end
+
+  xbt_price_usd = Net::HTTP.get_response(URI("https://api.kraken.com/0/public/Ticker?pair=XXBTZUSD"))
+  if xbt_price_usd.kind_of? Net::HTTPSuccess
+    @xbt_price_last = JSON.parse(xbt_price_usd.body)['result']['XXBTZUSD']['c'][0].to_f
+  else
+    @xbt_price_last = 2200.00
+  end
+
+  @xem_price_usd = (@xbt_price_last * 10**-8) * @xem_price_satoshis
+
   erb :index
 end
 
 post '/' do
-  @hash = Digest::SHA256.hexdigest params[:user_email].to_s
+  @xem_price_usd = params[:xem_price_usd].to_f
+  @usd_price = @xem_price_usd * settings.price
+
+  @id_hash = Digest::SHA256.hexdigest(params[:user_email])[0,31] # Truncate the hash for cheaper tx fee.
   payment_data = {
     v: 2,
     type: 2,
     data: {
-      addr: settings.payment_address,
-      amount: settings.price * 1000000,
-      msg: @hash
+      addr: settings.payment_address.gsub("-", ""),
+      amount: settings.price * 10**6,
+      msg: @id_hash
     }
   }
 
@@ -42,15 +62,15 @@ post '/' do
 end
 
 post '/download' do
-  node = "http://37.187.70.29:7890"
+  node = settings.nem_node
   node_status = Net::HTTP.get(URI("#{node}/node/info"))
   @node_name = JSON.parse(node_status)['identity']['name']
 
-  transfers = Net::HTTP.get(URI("#{node}/account/transfers/incoming?address=#{settings.payment_address}"))
+  transfers = Net::HTTP.get(URI("#{node}/account/transfers/incoming?address=#{settings.payment_address.gsub("-", "")}"))
   data = JSON.parse(transfers)['data']
 
-  @hash = params[:hash]
-  @encoded_message = @hash.unpack('H*')
+  @id_hash = params[:id_hash]
+  @encoded_message = @id_hash.unpack('H*')
   @search = data.find_all { |i| i['transaction']['message']['payload'] == @encoded_message[0] }
   @tx_list = Array.new
   @paid = Array.new
@@ -59,25 +79,25 @@ post '/download' do
   if @search.empty?
     erb :tx_not_found
   else
-    @search.each_with_index do |i, index|
-      @tx_list[index] = i['meta']['hash']['data']
-      @paid << i['transaction']['amount']
+    @search.each_with_index do |tx, index|
+      @tx_list[index] = tx['meta']['hash']['data']
+      @paid << tx['transaction']['amount']
     end
-    @paid = @paid.sum.to_f / 1000000
+    @paid = @paid.sum.to_f * 10**-6
     @difference = settings.price - @paid
     if @paid < settings.price
       erb :low_payment
     else
-      @download_link = Digest::SHA256.hexdigest DateTime.now.strftime('%s')
+      @download_link = Digest::SHA256.hexdigest(DateTime.now.strftime('%s'))
       erb :download
     end
   end
 end
 
 post "/:download_link" do
-  send_file File.join(settings.downloads, 'b990f5bcf64e5c04d25112b1.zip'),
-  :type => :zip,
-  :filename => 'hi.zip'
+  signer = Aws::S3::Presigner.new
+  url = signer.presigned_url(:get_object, bucket: "nemp3", key: "Ochre - Beyond the Outer Loop.zip", expires_in: 300)
+  redirect url
 end
 
 not_found do

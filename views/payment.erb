@@ -1,6 +1,6 @@
 <h2>Payment</h2>
 <p>
-  Great! Please send your XEM payment to the address encoded in the QR code below. The default value is <strong><%= settings.price %> XEM</strong>, but you can pay any amount, obviously. Pay less than <%= settings.price %> and your download will not be available, but you can always make up the shortfall in separate payments (you'll be advised on the exact value left to pay when we check for your payments, in the next step).
+  Great! Please send your XEM payment to the address encoded in the QR code below. The minimum price is <strong><%= settings.price %> XEM</strong> (~$<%= sprintf '%.2f', @usd_price %> USD), but you can pay any amount, obviously. Pay less than the asking price and your download will not be available, but you can always make up the shortfall in several separate payments (though you will pay more in transaction fees by doing this). You'll be advised on the exact value left to pay when we check for your payments in the next step.
 </p>
 <div class="qr-code">
   <%= @qr %>
@@ -9,18 +9,18 @@
   Alternatively, you can manually send your payment to this address:
 </p>
 <p>
-  <textarea class="payment-address" onclick="this.select()" readonly="readonly" rows="2">TCQFU2-U2UR27-EYLADA-6FNE6K-Y7ONFM-7YH7ZY-REBS</textarea>
+  <textarea class="payment-address" onclick="this.select()" readonly="readonly" rows="2"><%= settings.payment_address %></textarea>
 </p>
 <p>
-  You <strong>must</strong> include the hash below in the message field when making payment, as it's your unique purchase ID, linked to your email address, and stored on the blockchain as part of your transaction. This will be used to confirm that your purchase has successfully been made. It may take a minute for your payment to be confirmed by nodes on the network.
+  You <strong>must</strong> include the hash below in the message field when making payment, as it is your unique purchase ID, linked to your email address, and is stored on the blockchain as part of your transaction. This will be used to confirm that your purchase has successfully been made. It may take a minute for your payment to be confirmed by nodes on the network.
 </p>
 <p>
-  <textarea class="payment-message" onclick="this.select()" readonly="readonly" rows="2"><%= @hash %></textarea>
+  <textarea class="payment-message" onclick="this.select()" readonly="readonly" rows="2"><%= @id_hash %></textarea>
 </p>
 <p>
   All done? If your payment has been confirmed, please continue.
 </p>
 <form class="" action="/download" method="post">
-  <input type="hidden" name="hash" value="<%= @hash %>">
+  <input type="hidden" name="id_hash" value="<%= @id_hash %>">
   <button type="submit" class="btn btn-outline-primary btn-lg btn-block">Next Step: Download</button>
 </form>

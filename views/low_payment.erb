@@ -1,7 +1,7 @@
 <h2>Download</h2>
 <%= erb :node_name %>
 <p class="alert alert-warning" role="alert">
-  We successfully found your <%= @transaction %>, but noticed that you haven't paid enough to meet the price set of <%= settings.price %> XEM. You've currently paid <strong><%= sprintf "%.2f", @paid %> XEM</strong> to date, so please send an extra <strong><%= sprintf "%.2f", @difference %> XEM</strong> using the same address, and return for your download. Thanks!
+  We successfully found your <%= @transaction %>, but noticed that you haven't paid enough to meet the price set of <%= settings.price %> XEM. You've currently paid <strong><%= sprintf '%.2f', @paid %> XEM</strong> to date, so please send an extra <strong><%= sprintf '%.2f', @difference %> XEM</strong> using the same address, and return for your download. Thanks!
 </p>
 <p>
   <%= @transaction.capitalize %> found:

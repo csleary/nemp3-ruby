@@ -1,12 +1,24 @@
-<h2>Introduction</h2>
 <p>
-  Welcome to my experimental little app, which currently only lets you buy a zipped text file using the <a href="https://www.nem.io/">NEM</a> cryptocurrency (XEM), on the NEM <strong>testnet</strong> blockchain. The idea is to offer a download pay portal for creative artists, able to sell music, books, software etc., and be remunerated directly and automatically.
+  Welcome to my experimental little app, which currently only lets you buy my latest album using the <a href="https://www.nem.io/">NEM</a> cryptocurrency and blockchain. You could call it a bare MVP at this point, the eventual idea being to offer a download pay portal for creative artists, able to sell music, books, software etc., and be remunerated directly and automatically.
 </p>
-<p>To begin, please enter your email address (don't worry, I don't save this, or any other data from you. It's just to create your own unique ID to verify your payment.)
+<h3 class="album-title text-center">
+  Ochre<br>
+  <em>Beyond the Outer Loop</em><br>
+  Aura Materia &bull; 2017<br>
+</h3>
+<div class="text-center">
+  <img class="cover-art img-fluid"src="https://f4.bcbits.com/img/a4092091475_10.jpg" alt="">
+</div>
+<p class="release-meta text-center">
+  Cat.: AURA006 &bull; Download format: mp3 V0 VBR &bull; Price: <%= settings.price %> XEM<br>
+  <a href="https://open.spotify.com/album/6gOkTOsw1ax9UYZ5zVghOu">Spotify</a> &bull; <a href="https://ochre.bandcamp.com/album/beyond-the-outer-loop">Bandcamp</a>
+</p>
+<p>To begin, please enter your email address (don't worry, I don't save this, or any other data from you. It's only used to create your own unique ID to verify your payment.)
 </p>
 <form class="email-form" action="/" method="post">
-  <label for="user_email">Your Email Address:</label>
+  <label for="user_email">Your email address:</label>
   <input type="email" class="form-control email" name="user_email" placeholder="Email"required>
+  <input type="hidden" name="xem_price_usd" value="<%= @xem_price_usd %>">
   <button type="submit" class="btn btn-outline-primary btn-lg btn-block">Next Step: Payment</button>
 </form>
 <h3>FAQ</h3>
@@ -14,17 +26,41 @@
   <strong>Why do you need my email address?</strong>
 </p>
 <p>
-  At the moment your email address is solely used to provide you with a unique ID. This ID is included with your payment as a transaction message, and so is publicly available on the NEM blockchain. The app checks the blockchain for this ID, and on successfully finding it, serves up a download button for you.
+  At the moment your email address is solely used to provide you with a unique ID. This ID is included with your payment as a transaction message, and so is publicly available on the NEM blockchain. The app checks the blockchain for this ID, and on successfully finding it, checks you have paid enough before serving up a download button for you.
 </p>
 <p>
   <strong>Can someone see my email address on the blockchain?</strong>
 </p>
 <p>
-  No, your email address is one-way hashed using the SHA256 cryptographic function, and cannot be resolved from the ID hash on the blockchain transaction.
+  No, your email address is hashed using the SHA-256 cryptographic function, and cannot be resolved from the ID hash on the blockchain transaction. The resulting hash is truncated down to 32 characters to minimise transaction fees (in NEM each transaction is currently a minimum of 1 XEM, plus another 1 XEM for every 32 characters used in a message).
+</p>
+<p>
+  <strong>Where can I buy some XEM?</strong>
+</p>
+<p>
+  The larger exchanges such as <a href="https://bittrex.com/">Bittrex</a> or <a href="https://www.poloniex.com/">Poloniex</a> would be the most cost effective, though XEM is usually traded against Bitcoin, so you would need to either purchase or trade currency for Bitcoin first, then trade it for XEM.
+</p>
+<p>
+  According to Bittrex, 1 XEM is currently worth <%= @xem_price_satoshis %> Satoshis, or about $<%= sprintf '%.2f', @xem_price_usd %> USD.
+</p>
+<p>
+  If you would rather just buy a small amount of XEM quickly with USD using your credit/debit card, you could try a service like Changelly, though this convenience comes at the price of greater fees and/or a poorer exchange rate. In all cases, it will be more cost effective exchanging a larger single sum than multiple smaller sums.
+</p>
+<p>
+  <strong>I've not used NEM before &ndash; which wallet should I use?</strong>
+</p>
+<p>
+  There are two official wallets, a browser-based desktop client called Nano Wallet, and an Android/iOS Mobile Wallet. More information on both can be found on the <a href="https://www.nem.io/install.html">NEM site</a>.
 </p>
 <p>
   <strong>What if I lose my download?</strong>
 </p>
 <p>
   You can return to this app at any time to receive another download. You just need to enter the email address you originally used, as your ID will match your original purchase on the blockchain. This app uses no databases, and stores no user data.
+</p>
+<p>
+  <strong>This is pretty cool! Can I send you a tip?</strong>
+</p>
+<p>
+  Thank you! I'd be more than happy to receive a tip. All you need do is make a payment as usual, omitting the massage ID if you don't need or want a download.
 </p>

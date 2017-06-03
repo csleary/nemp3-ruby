@@ -5,7 +5,12 @@ body {
 }
 
 footer {
-  min-height: 5rem;
+  margin: 2rem 0;
+}
+
+.header {
+  background-color: #eee;
+  padding-bottom: 2rem;
 }
 
 .title {
@@ -15,8 +20,12 @@ footer {
   text-shadow: 4px 4px 0 #41ce7c, 8px 8px 0 #5ab3e8;
 }
 
-h2, h3 {
+h2, h3, h4 {
   margin-bottom: 1rem;
+}
+
+ol {
+  margin-bottom: 2rem;
 }
 
 a, a:hover, a:active, a:visited, a:focus {
@@ -60,10 +69,9 @@ a, a:hover, a:active, a:visited, a:focus {
   border-color: #41ce7c;
 }
 
-.container,
 .row,
 footer {
-  padding-top: 1rem;
+  padding-top: 2rem;
 }
 
 .payment-address,
@@ -75,9 +83,14 @@ footer {
   font-weight: bold;
   overflow: hidden;
   padding: .5rem 0;
+  resize: none;
   text-align: center;
   width: 100%;
   -webkit-appearance: none;
+}
+
+.payment-message {
+  height: 2.8rem;
 }
 
 .qr-code {
@@ -90,6 +103,7 @@ footer {
 }
 
 .email {
+  border-color: #ccc;
   border-width: 2px;
   font-size: 2rem;
   padding: .75rem 1.5rem;
@@ -100,13 +114,42 @@ footer {
   font-weight: bold;
 }
 
+.id-hash {
+  font-weight: bold;
+  text-align: center;
+}
+
 .id-hash,
 .tx-list {
   overflow: auto;
   white-space: nowrap;
 }
 
-@media (min-width: 768px) {
+.album-title {
+  font-size: 1.5rem;
+  margin: 2rem 0;
+}
+
+.cover-art {
+  background-color: #fff;
+  border: 2px solid #ccc;
+  border-radius: .3rem;
+  margin-bottom: 2rem;
+  padding: 2rem;
+}
+
+.release-meta {
+  font-weight: bold;
+}
+
+@media (min-width: 576px) {
+  .cover-art {
+    max-height: 24rem;
+    object-fit: cover;
+    object-position: center;
+    width: 100%;
+  }
+
   .payment-address,
   .payment-message {
     height: 2.8rem;
