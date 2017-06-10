@@ -1,7 +1,11 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
+
 ruby '2.4.1'
-gem 'sinatra'
+gem 'aws-sdk', '~> 2'
+gem 'puma', '~> 3.4'
 gem 'rerun'
 gem 'rqrcode', '~> 0.10.1'
-gem 'puma', '~> 3.4'
-gem 'aws-sdk', '~> 2'
+gem 'rubocop', require: false
+gem 'sinatra'

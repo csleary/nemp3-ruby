@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby -wKU
+# frozen_string_literal: true
 
 workers Integer(ENV['WEB_CONCURRENCY'] || 2)
 threads_count = Integer(ENV['RAILS_MAX_THREADS'] || 5)
