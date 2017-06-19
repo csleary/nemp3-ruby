@@ -18,11 +18,11 @@ set :price, 30
 
 # Mainnet: NBCR2G-JL7VJF-3FKVI6-6SMZCG-4YBC6H-3BM2A6-LLTM
 # Testnet: TCQFU2-U2UR27-EYLADA-6FNE6K-Y7ONFM-7YH7ZY-REBS
-set :payment_address, 'NBCR2G-JL7VJF-3FKVI6-6SMZCG-4YBC6H-3BM2A6-LLTM'
+set :payment_address, 'TCQFU2-U2UR27-EYLADA-6FNE6K-Y7ONFM-7YH7ZY-REBS'
 
 # Mainnet: http://85.25.36.97:7890
 # Testnet: http://37.187.70.29:7890
-set :nem_node, URI('http://85.25.36.97:7890')
+set :nem_node, URI('http://37.187.70.29:7890')
 
 get '/' do
   xem_price_btc = Net::HTTP.get_response(
