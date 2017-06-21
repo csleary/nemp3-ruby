@@ -14,7 +14,7 @@ helpers do
 end
 
 set :root, File.dirname(__FILE__)
-set :price, 30
+set :price, 40
 
 # Mainnet: NBCR2G-JL7VJF-3FKVI6-6SMZCG-4YBC6H-3BM2A6-LLTM
 # Testnet: TCQFU2-U2UR27-EYLADA-6FNE6K-Y7ONFM-7YH7ZY-REBS
@@ -120,7 +120,7 @@ post '/:download_link' do
   url = signer.presigned_url(
     :get_object,
     bucket: 'nemp3',
-    key: 'Ochre - Beyond the Outer Loop.zip', expires_in: 300
+    key: 'Empty.zip', expires_in: 300
   )
   redirect url
 end
