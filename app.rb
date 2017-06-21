@@ -14,7 +14,7 @@ helpers do
 end
 
 set :root, File.dirname(__FILE__)
-set :price, 40
+set :price, 30
 
 # Mainnet: NBCR2G-JL7VJF-3FKVI6-6SMZCG-4YBC6H-3BM2A6-LLTM
 # Testnet: TCQFU2-U2UR27-EYLADA-6FNE6K-Y7ONFM-7YH7ZY-REBS
