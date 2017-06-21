@@ -28,7 +28,6 @@ footer {
   text-shadow: initial;
   top: 3px;
   left: -323px;
-  z-index: 1;
 }
 
 .slash {
@@ -41,7 +40,6 @@ footer {
   position: relative;
   top: -15px;
   left: 114px;
-  z-index: 1;
 }
 
 h2, h3, h4 {
