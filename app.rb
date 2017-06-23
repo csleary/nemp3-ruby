@@ -82,11 +82,21 @@ post '/download' do
   node_status = Net::HTTP.get(URI("#{node}/node/info"))
   @node_name = JSON.parse(node_status)['identity']['name']
 
-  transfers = Net::HTTP.get(
-    URI("#{node}/account/transfers/incoming?address="\
-    "#{settings.payment_address.delete('-')}")
-  )
-  data = JSON.parse(transfers)['data']
+  # Search for txs in groups of 25
+  parameters = ''
+  data = []
+  loop do
+    transfers = Net::HTTP.get(
+      URI("#{node}/account/transfers/incoming?address="\
+      "#{settings.payment_address.delete('-')}#{parameters}")
+    )
+    latest_data = JSON.parse(transfers)['data']
+    break if latest_data.empty?
+    tx_hash = latest_data.last['meta']['hash']['data']
+    tx_id = latest_data.last['meta']['id']
+    parameters = "&hash=#{tx_hash}&id=#{tx_id}"
+    data.concat latest_data
+  end
 
   @id_hash = params[:id_hash]
   @encoded_message = @id_hash.unpack('H*')
