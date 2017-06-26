@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Righteous');
+@import url('https://fonts.googleapis.com/css?family=Righteous|Permanent+Marker');
 
 body {
   background-color: #fafafa;
@@ -18,6 +18,28 @@ footer {
   font-family: 'Righteous', sans-serif;
   font-size: 6rem;
   text-shadow: 4px 4px 0 #41ce7c, 8px 8px 0 #5ab3e8;
+}
+
+.temp3 {
+  font-family: 'Permanent Marker', sans-serif;
+  font-size: 6rem;
+  color: #000;
+  position: relative;
+  text-shadow: initial;
+  top: 3px;
+  left: -323px;
+}
+
+.slash {
+  display: none;
+}
+
+.testnet {
+  font-family: 'Permanent Marker', sans-serif;
+  margin: 0;
+  position: relative;
+  top: -15px;
+  left: 114px;
 }
 
 h2, h3, h4 {
@@ -147,6 +169,29 @@ footer {
 }
 
 @media (min-width: 576px) {
+  .temp3 {
+    font-family: 'Permanent Marker', sans-serif;
+    font-size: 6rem;
+    color: #222;
+    position: relative;
+    text-shadow: initial;
+    top: -20px;
+    left: -360px;
+    z-index: 2;
+  }
+
+  .slash {
+    display: inherit;
+    top: 18px;
+    left: 0px;
+    z-index: 3;
+  }
+
+  .testnet {
+    color: #222;
+    left: 80px;
+  }
+
   .cover-art {
     max-height: 24rem;
     object-fit: cover;
