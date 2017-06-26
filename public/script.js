@@ -1,6 +1,6 @@
 $('.checkForPayment').submit(function(){
     $('.paymentButton')
     .prop('disabled', true)
-    .text('Searching...')
+    .text('Searching\u2026')
     .addClass('pleaseWait');
 });
