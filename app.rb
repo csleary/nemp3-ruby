@@ -79,9 +79,25 @@ post '/' do
 end
 
 post '/download' do
-  node = settings.nem_node
-  node_status = Net::HTTP.get(URI("#{node}/node/info"))
-  @node_name = JSON.parse(node_status)['identity']['name']
+  node = ''
+  @node_name = ''
+
+  settings.nodes.each do |node_address|
+    begin
+      node_info = Net::HTTP.get_response(
+        URI("http://#{node_address}/node/info")
+      )
+      if node_info.is_a? Net::HTTPSuccess
+        node = node_address
+        @node_name = JSON.parse(node_info.body)['identity']['name']
+        break
+      else
+        next
+      end
+    rescue
+      next
+    end
+  end
 
   # Search for txs in groups of 25
   parameters = ''
