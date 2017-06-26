@@ -160,6 +160,10 @@ footer {
   padding: 2rem;
 }
 
+.pleaseWait {
+  cursor: progress !important;
+}
+
 .release-meta {
   font-weight: bold;
 }
