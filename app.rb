@@ -20,9 +20,6 @@ set :price, 30
 # Testnet: TCQFU2-U2UR27-EYLADA-6FNE6K-Y7ONFM-7YH7ZY-REBS
 set :payment_address, 'NBCR2G-JL7VJF-3FKVI6-6SMZCG-4YBC6H-3BM2A6-LLTM'
 
-# Mainnet: http://85.25.36.97:7890
-# Mainnet: http://108.61.182.27:7890
-# Testnet: http://37.187.70.29:7890
 set :nodes, [
   '85.25.36.97:7890',
   '108.61.182.27:7890',
@@ -110,7 +107,7 @@ post '/download' do
   data = []
   loop do
     transfers = Net::HTTP.get(
-      URI("#{node}/account/transfers/incoming?address="\
+      URI("http://#{node}/account/transfers/incoming?address="\
       "#{settings.payment_address.delete('-')}#{parameters}")
     )
     latest_data = JSON.parse(transfers)['data']
