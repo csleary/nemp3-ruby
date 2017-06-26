@@ -14,7 +14,7 @@ helpers do
 end
 
 set :root, File.dirname(__FILE__)
-set :price, 30
+set :price, 40
 
 if settings.production?
   set :payment_address, 'NBCR2G-JL7VJF-3FKVI6-6SMZCG-4YBC6H-3BM2A6-LLTM'
