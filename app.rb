@@ -16,18 +16,26 @@ end
 set :root, File.dirname(__FILE__)
 set :price, 30
 
-# Mainnet: NBCR2G-JL7VJF-3FKVI6-6SMZCG-4YBC6H-3BM2A6-LLTM
-# Testnet: TCQFU2-U2UR27-EYLADA-6FNE6K-Y7ONFM-7YH7ZY-REBS
-set :payment_address, 'TCQFU2-U2UR27-EYLADA-6FNE6K-Y7ONFM-7YH7ZY-REBS'
-
-set :nodes, [
-  '37.187.70.29:7890',
-  '104.128.226.60:7890',
-  '23.228.67.85:7890',
-  '50.3.87.123:7890',
-  '192.3.61.243:7890',
-  '150.95.145.157:7890'
-]
+if settings.production?
+  set :payment_address, 'NBCR2G-JL7VJF-3FKVI6-6SMZCG-4YBC6H-3BM2A6-LLTM'
+  set :nodes, [
+    '85.25.36.97:7890',
+    '108.61.182.27:7890',
+    '108.61.168.86:7890',
+    '104.238.161.61:7890',
+    '88.99.192.82:7890'
+  ]
+else
+  set :payment_address, 'TCQFU2-U2UR27-EYLADA-6FNE6K-Y7ONFM-7YH7ZY-REBS'
+  set :nodes, [
+    '37.187.70.29:7890',
+    '104.128.226.60:7890',
+    '23.228.67.85:7890',
+    '50.3.87.123:7890',
+    '192.3.61.243:7890',
+    '150.95.145.157:7890'
+  ]
+end
 
 get '/' do
   xem_price_btc = Net::HTTP.get_response(
@@ -37,7 +45,7 @@ get '/' do
     if xem_price_btc.is_a? Net::HTTPSuccess
       (JSON.parse(xem_price_btc.body)['result']['Last'] * 10**8).to_i
     else
-      8000
+      7000
     end
 
   xbt_price_usd = Net::HTTP.get_response(
