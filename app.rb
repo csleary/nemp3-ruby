@@ -157,11 +157,22 @@ end
 
 post '/:download_link' do
   signer = Aws::S3::Presigner.new
-  url = signer.presigned_url(
-    :get_object,
-    bucket: 'nemp3',
-    key: 'Empty.zip', expires_in: 300
-  )
+  url =
+  if settings.production?
+    signer.presigned_url(
+      :get_object,
+      bucket: 'nemp3',
+      key: 'Ochre - Beyond the Outer Loop.zip',
+      expires_in: 300
+    )
+  else
+    signer.presigned_url(
+      :get_object,
+      bucket: 'nemp3',
+      key: 'Empty.zip',
+      expires_in: 300
+    )
+  end
   redirect url
 end
 
