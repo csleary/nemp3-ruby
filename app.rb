@@ -59,7 +59,8 @@ post '/' do
   @usd_price = @xem_price_usd * settings.price
 
   # Truncate the hash for cheaper tx fee.
-  @id_hash = Digest::SHA256.hexdigest(params[:user_email] + ENV['NEMP3_SECRET'])[0, 31]
+  @id_hash = Digest::SHA256.hexdigest(params[:user_email] +
+  ENV['NEMP3_SECRET'])[0, 31]
   payment_data = {
     v: 2,
     type: 2,
