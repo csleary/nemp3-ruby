@@ -20,7 +20,7 @@
 <p>
   All done? If your payment has been confirmed, please continue.
 </p>
-<form class="" action="/download" method="post">
+<form class="checkForPayment" action="/download" method="post">
   <input type="hidden" name="id_hash" value="<%= @id_hash %>">
-  <button type="submit" class="btn btn-outline-primary btn-lg btn-block">Next Step: Download</button>
+  <button type="submit" class="btn btn-outline-primary btn-lg btn-block paymentButton ">Next Step: Download</button>
 </form>
