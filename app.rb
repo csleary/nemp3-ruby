@@ -20,9 +20,14 @@ set :price, 30
 # Testnet: TCQFU2-U2UR27-EYLADA-6FNE6K-Y7ONFM-7YH7ZY-REBS
 set :payment_address, 'TCQFU2-U2UR27-EYLADA-6FNE6K-Y7ONFM-7YH7ZY-REBS'
 
-# Mainnet: http://85.25.36.97:7890
-# Testnet: http://37.187.70.29:7890
-set :nem_node, URI('http://37.187.70.29:7890')
+set :nodes, [
+  '37.187.70.29:7890',
+  '104.128.226.60:7890',
+  '23.228.67.85:7890',
+  '50.3.87.123:7890',
+  '192.3.61.243:7890',
+  '150.95.145.157:7890'
+]
 
 get '/' do
   xem_price_btc = Net::HTTP.get_response(
@@ -55,7 +60,8 @@ post '/' do
   @usd_price = @xem_price_usd * settings.price
 
   # Truncate the hash for cheaper tx fee.
-  @id_hash = Digest::SHA256.hexdigest(params[:user_email] + ENV['NEMP3_SECRET'])[0, 31]
+  @id_hash = Digest::SHA256.hexdigest(params[:user_email] +
+  ENV['NEMP3_SECRET'])[0, 31]
   payment_data = {
     v: 2,
     type: 2,
@@ -78,16 +84,32 @@ post '/' do
 end
 
 post '/download' do
-  node = settings.nem_node
-  node_status = Net::HTTP.get(URI("#{node}/node/info"))
-  @node_name = JSON.parse(node_status)['identity']['name']
+  node = ''
+  @node_name = ''
+
+  settings.nodes.each do |node_address|
+    begin
+      node_info = Net::HTTP.get_response(
+        URI("http://#{node_address}/node/info")
+      )
+      if node_info.is_a? Net::HTTPSuccess
+        node = node_address
+        @node_name = JSON.parse(node_info.body)['identity']['name']
+        break
+      else
+        next
+      end
+    rescue
+      next
+    end
+  end
 
   # Search for txs in groups of 25
   parameters = ''
   data = []
   loop do
     transfers = Net::HTTP.get(
-      URI("#{node}/account/transfers/incoming?address="\
+      URI("http://#{node}/account/transfers/incoming?address="\
       "#{settings.payment_address.delete('-')}#{parameters}")
     )
     latest_data = JSON.parse(transfers)['data']
