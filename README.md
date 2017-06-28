@@ -15,4 +15,5 @@ Should anything be amiss, please feel free to open an issue ticket and I'll look
 For more information on the NEM cryptocurrency, please visit https://www.nem.io/.
 
 Thanks!
+
 Chris
