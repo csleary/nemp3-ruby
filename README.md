@@ -20,7 +20,7 @@ Though in general I would advise against using raw unsigned URLs, as they can ea
 
 - Other than the default AWS environment variables, NEMp3 uses a secret hash to salt email addresses. Please set this on your server using the 'NEMP3_SECRET' key, otherwise it'll be empty and so won't salt anything.
 
-- For deployment I can recommend [Puma](http://puma.io/) to serve it, as well as using [Supervisord](http://supervisord.org/index.html) to daemonise your app as a service, should you decide to host it on your own server rather than a PaaS.
+- For deployment I can recommend [Puma](http://puma.io/) to serve it, as well as using [Supervisor](http://supervisord.org/index.html) to daemonise your app as a service, should you decide to host it on your own server rather than a PaaS.
 
 Should anything be amiss, please feel free to open an issue ticket and I'll look into it.
 
