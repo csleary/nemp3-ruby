@@ -1,4 +1,4 @@
-# NEMp3 - A Cryptocurrency Download Payment Portal #
+# NEMp3 - A Cryptocurrency Download Payment Portal
 
 NEMp3 is a Ruby/Sinatra web app that allows you to purchase music using the NEM cryptocurrency. A unique user ID hash is generated from a user email address, which is then included with a payment (as a NEM 'message'). NEMp3 searches for this ID on the blockchain, and if found, checks the amount paid, serving up a download button if the amount paid exceeds the minimum price set inside the app. Downloads are served via Amazon S3 buckets.
 

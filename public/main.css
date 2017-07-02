@@ -23,23 +23,28 @@ footer {
 .temp3 {
   font-family: 'Permanent Marker', sans-serif;
   font-size: 6rem;
-  color: #000;
+  color: #222;
+  position: absolute;
+}
+
+.tee {
+  display: inline;
   position: relative;
-  text-shadow: initial;
-  top: 3px;
-  left: -323px;
+  left: -3.8rem;
+  top: -8.5rem;
 }
 
 .slash {
   display: none;
+  position: relative;
 }
 
 .testnet {
-  font-family: 'Permanent Marker', sans-serif;
-  margin: 0;
+  display: inline;
+  font-size: 1.5rem;
   position: relative;
-  top: -15px;
-  left: 114px;
+  left: -4rem;
+  top: -6.4rem;
 }
 
 h2, h3, h4 {
@@ -169,27 +174,20 @@ footer {
 }
 
 @media (min-width: 576px) {
-  .temp3 {
-    font-family: 'Permanent Marker', sans-serif;
-    font-size: 6rem;
-    color: #222;
-    position: relative;
-    text-shadow: initial;
-    top: -20px;
-    left: -360px;
-    z-index: 2;
+  .tee {
+    left: -4rem;
+    top: -9.8rem;
   }
 
   .slash {
-    display: inherit;
-    top: 18px;
-    left: 0px;
-    z-index: 3;
+    display: inline;
+    left: -6.4rem;
+    top: -8.5rem;
   }
 
   .testnet {
-    color: #222;
-    left: 80px;
+    left: 2.7rem;
+    top: -6.5rem;
   }
 
   .cover-art {
