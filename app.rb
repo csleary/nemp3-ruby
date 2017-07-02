@@ -57,13 +57,12 @@ get '/' do
     end
 
   @xem_price_usd = (@xbt_price_last * 10**-8) * @xem_price_satoshis
-
+  @usd_price = @xem_price_usd * settings.price
   erb :index
 end
 
 post '/' do
-  @xem_price_usd = params[:xem_price_usd].to_f
-  @usd_price = @xem_price_usd * settings.price
+  @usd_price = params[:usd_price]
 
   # Calculate customer ID hash and truncate it for cheaper tx fee.
   @id_hash = Digest::SHA256.hexdigest(params[:user_email] +
