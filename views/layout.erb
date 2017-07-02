@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <% if settings.production? %>
-    <title>NEMp3</title>
+  <title>NEMp3</title>
   <% else %>
-    <title>TEMp3</title>
+  <title>TEMp3</title>
   <% end %>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
   <link rel="stylesheet" href="/main.css">
@@ -15,14 +15,20 @@
   <div class="container-fluid header">
     <div class="row">
       <div class="col-lg-12">
-        <% if settings.production? %>
-          <a href="/"><h1 class="title text-center">NEMp3</h1></a>
-        <% else %>
-          <a href="/"><h1 class="title text-center">NEMp3<span class="temp3 text-center">T<span class="temp3 slash text-center">/</span></span></h1></a>
-          <h4 class="testnet text-center">TESTNET</h4>
-        <% end %>
+        <a href="/">
+          <h1 class="title text-center">NEMp3</h1>
+        </a>
       </div>
     </div>
+    <% if settings.development? %>
+      <div class="row pt-0">
+        <div class="col-lg-12 temp3 text-center">
+          <div class="tee">T</div>
+          <div class="slash">/</div>
+          <div class="testnet">TESTNET</div>
+        </div>
+      </div>
+    <% end %>
   </div>
   <div class="container">
     <section>

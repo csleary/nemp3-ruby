@@ -1,4 +1,4 @@
-# NEMp3 - A Cryptocurrency Download Payment Portal #
+# NEMp3 - A Cryptocurrency Download Payment Portal
 
 NEMp3 is a Ruby/Sinatra web app that allows you to purchase music using the NEM cryptocurrency. A unique user ID hash is generated from a user email address, which is then included with a payment (as a NEM 'message'). NEMp3 searches for this ID on the blockchain, and if found, checks the amount paid, serving up a download button if the amount paid exceeds the minimum price set inside the app. Downloads are served via Amazon S3 buckets.
 
@@ -20,7 +20,7 @@ Though in general I would advise against using raw unsigned URLs, as they can ea
 
 - Other than the default AWS environment variables, NEMp3 uses a secret hash to salt email addresses. Please set this on your server using the 'NEMP3_SECRET' key, otherwise it'll be empty and so won't salt anything.
 
-- For deployment I can recommend [Puma](http://puma.io/) to serve it, as well as using [Supervisord](http://supervisord.org/index.html) to daemonise your app as a service, should you decide to host it on your own server rather than a PaaS.
+- For deployment I can recommend [Puma](http://puma.io/) to serve it, as well as using [Supervisor](http://supervisord.org/index.html) to daemonise your app as a service, should you decide to host it on your own server rather than a PaaS.
 
 Should anything be amiss, please feel free to open an issue ticket and I'll look into it.
 
