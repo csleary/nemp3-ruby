@@ -98,7 +98,7 @@ post '/download' do
   settings.nodes.each do |node_address|
     begin
       node_info = ''
-      Timeout::timeout(2) do
+      Timeout.timeout(2) do
         node_info = Net::HTTP.get_response(
           URI("http://#{node_address}/node/info")
         )
@@ -123,9 +123,8 @@ post '/download' do
     )
     latest_data = JSON.parse(transfers)['data']
     break if latest_data.empty?
-    tx_hash = latest_data.last['meta']['hash']['data']
     tx_id = latest_data.last['meta']['id']
-    parameters = "&hash=#{tx_hash}&id=#{tx_id}"
+    parameters = "&id=#{tx_id}"
     data.concat latest_data
   end
 
