@@ -14,8 +14,9 @@ set :price, 40
 if settings.production?
   set :payment_address, 'NBCR2G-JL7VJF-3FKVI6-6SMZCG-4YBC6H-3BM2A6-LLTM'
   set :nodes, [
-    '85.25.36.97:7890',
+    '62.75.251.134:7890',
     '62.75.163.236:7890',
+    '85.25.36.97:7890',
     '199.217.112.135:7890',
     '108.61.182.27:7890',
     '108.61.168.86:7890',
