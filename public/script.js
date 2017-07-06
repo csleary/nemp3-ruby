@@ -1,4 +1,4 @@
-$('.checkForPayment').submit(function(){
+$('.checkForPayment').submit(function() {
     $('.paymentButton')
     .prop('disabled', true)
     .text('Searching\u2026')
