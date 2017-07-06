@@ -103,7 +103,6 @@ post '/download' do
           URI("http://#{node_address}/node/info")
         )
       end
-      puts node_info
       next unless node_info.is_a? Net::HTTPSuccess
       node = node_address
       @node_name = JSON.parse(node_info.body)['identity']['name']
