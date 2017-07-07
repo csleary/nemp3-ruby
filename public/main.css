@@ -106,7 +106,7 @@ main .row {
 
 .payment-address,
 .payment-message {
-  background: #efefef;
+  background: #ddd;
   border: 2px solid #999;
   border-radius: 0;
   font-size: 1rem;
