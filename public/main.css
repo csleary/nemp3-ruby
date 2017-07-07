@@ -51,6 +51,10 @@ h2, h3, h4 {
   margin-bottom: 1rem;
 }
 
+p:last-child {
+  margin: 0;
+}
+
 ol {
   margin-bottom: 2rem;
 }
@@ -97,7 +101,7 @@ a, a:hover, a:active, a:visited, a:focus {
 }
 
 main .row {
-  padding: 2rem 0;
+  padding: 4rem 0 2rem;
 }
 
 .payment-address,
@@ -125,7 +129,7 @@ main .row {
 }
 
 .email-form {
-  margin: 2rem 0;
+  margin: 2rem 0 4rem;
 }
 
 .email {
@@ -153,7 +157,7 @@ main .row {
 
 .album-title {
   font-size: 1.5rem;
-  margin: 2rem 0;
+  margin: 4rem 0 2rem;
 }
 
 .cover-art {
@@ -171,7 +175,7 @@ main .row {
 
 .release-meta {
   font-weight: bold;
-  margin-bottom: 2rem;
+  margin-bottom: 4rem;
 }
 
 @media (min-width: 576px) {
