@@ -159,6 +159,7 @@ main .row {
 .cover-art {
   background: #fff;
   border: 2px solid #ccc;
+  border-radius: .3rem;
   padding: 3rem;
   margin-bottom: 2rem;
   max-width: 32rem;
