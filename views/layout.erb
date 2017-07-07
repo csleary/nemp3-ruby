@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="/main.css">
 </head>
 <body>
-  <div class="container-fluid header">
+  <header class="container-fluid header">
     <div class="row">
       <div class="col-lg-12">
         <a href="/">
@@ -21,23 +21,23 @@
       </div>
     </div>
     <% if settings.development? %>
-      <div class="row pt-0">
-        <div class="col-lg-12 temp3 text-center">
-          <div class="tee">T</div>
-          <div class="slash">/</div>
-          <div class="testnet">TESTNET</div>
-        </div>
+    <div class="row pt-0">
+      <div class="col-lg-12 temp3 text-center">
+        <div class="tee">T</div>
+        <div class="slash">/</div>
+        <div class="testnet">TESTNET</div>
       </div>
+    </div>
     <% end %>
-  </div>
+  </header>
   <div class="container">
-    <section>
+    <main>
       <div class="row">
         <div class="col-lg-8 offset-lg-2">
           <%= yield %>
         </div>
       </div>
-    </section>
+    </main>
     <footer>
       <p class="text-center">
         An experiment by <a href="http://ochremusic.com">Chris</a>.
@@ -45,9 +45,9 @@
       <p class="text-center">
         <small>
           <% if settings.production? %>
-            <a href="https://nemp3-testnet.herokuapp.com/">Testnet version </a>
+          <a href="https://nemp3-testnet.herokuapp.com/">Testnet version </a>
           <% else %>
-            <a href="https://nemp3.herokuapp.com/">Mainnet version </a>
+          <a href="https://nemp3.herokuapp.com/">Mainnet version </a>
           <% end %>
           &bull; <a href="https://github.com/csleary/nemp3">GitHub</a>
         </small>

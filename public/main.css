@@ -1,16 +1,16 @@
 @import url('https://fonts.googleapis.com/css?family=Righteous|Permanent+Marker');
 
 body {
-  background-color: #fafafa;
+  background-color: #f4f4f4;
+}
+
+header {
+  background-color: #e1e1e1;
+  padding: 2rem 0;
 }
 
 footer {
-  margin: 2rem 0;
-}
-
-.header {
-  background-color: #eee;
-  padding-bottom: 2rem;
+  padding: 2rem 0;
 }
 
 .title {
@@ -96,9 +96,8 @@ a, a:hover, a:active, a:visited, a:focus {
   border-color: #41ce7c;
 }
 
-.row,
-footer {
-  padding-top: 2rem;
+main .row {
+  padding: 2rem 0;
 }
 
 .payment-address,
@@ -158,11 +157,11 @@ footer {
 }
 
 .cover-art {
-  background-color: #fff;
+  background: #fff;
   border: 2px solid #ccc;
-  border-radius: .3rem;
+  padding: 3rem;
   margin-bottom: 2rem;
-  padding: 2rem;
+  max-width: 32rem;
 }
 
 .pleaseWait {
@@ -171,6 +170,7 @@ footer {
 
 .release-meta {
   font-weight: bold;
+  margin-bottom: 2rem;
 }
 
 @media (min-width: 576px) {
@@ -188,13 +188,6 @@ footer {
   .testnet {
     left: 2.7rem;
     top: -6.5rem;
-  }
-
-  .cover-art {
-    max-height: 24rem;
-    object-fit: cover;
-    object-position: center;
-    width: 100%;
   }
 
   .payment-address,
