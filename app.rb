@@ -11,6 +11,8 @@ require 'sinatra'
 set :root, File.dirname(__FILE__)
 set :price, 40
 
+# set :environment, :production
+
 if settings.production?
   set :payment_address, 'NBCR2G-JL7VJF-3FKVI6-6SMZCG-4YBC6H-3BM2A6-LLTM'
   set :network_version, 2
@@ -134,7 +136,11 @@ post '/download' do
   @id_hash = params[:id_hash]
   @encoded_message = @id_hash.unpack('H*')
   @search = data.find_all do |tx|
-    tx['transaction']['message']['payload'] == @encoded_message[0]
+    if tx['transaction']['otherTrans']
+      tx['transaction']['otherTrans']['message']['payload'] == @encoded_message[0]
+    else
+      tx['transaction']['message']['payload'] == @encoded_message[0]
+    end
   end
   @tx_list = []
   @paid = []
