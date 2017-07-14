@@ -13,6 +13,7 @@ set :price, 40
 
 if settings.production?
   set :payment_address, 'NBCR2G-JL7VJF-3FKVI6-6SMZCG-4YBC6H-3BM2A6-LLTM'
+  set :network_version, 2
   set :nodes, [
     '62.75.251.134:7890',
     '62.75.163.236:7890',
@@ -25,6 +26,7 @@ if settings.production?
   ]
 else
   set :payment_address, 'TCQFU2-U2UR27-EYLADA-6FNE6K-Y7ONFM-7YH7ZY-REBS'
+  set :network_version, 1
   set :nodes, [
     '37.187.70.29:7890',
     '104.128.226.60:7890',
@@ -69,7 +71,7 @@ post '/' do
   @id_hash = Digest::SHA256.hexdigest(params[:user_email] +
   ENV['NEMP3_SECRET'])[0, 31]
   payment_data = {
-    v: 2,
+    v: settings.network_version,
     type: 2,
     data: {
       addr: settings.payment_address.delete('-'),
