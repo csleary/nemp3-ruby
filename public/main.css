@@ -113,7 +113,7 @@ main .row {
 
 .payment-address,
 .payment-message {
-  background: #fff;
+  background: #e1e1e1;
   border: 0;
   border-radius: .25rem;
   font-size: 1rem;
