@@ -134,7 +134,11 @@ post '/download' do
   @id_hash = params[:id_hash]
   @encoded_message = @id_hash.unpack('H*')
   @search = data.find_all do |tx|
-    tx['transaction']['message']['payload'] == @encoded_message[0]
+    if tx['transaction']['otherTrans']
+      tx['transaction']['otherTrans']['message']['payload'] == @encoded_message[0]
+    else
+      tx['transaction']['message']['payload'] == @encoded_message[0]
+    end
   end
   @tx_list = []
   @paid = []
