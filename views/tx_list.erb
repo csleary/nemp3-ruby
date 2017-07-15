@@ -1,5 +1,5 @@
 <ol class="tx-list">
   <% @tx_list.each do |tx| %>
-  <li><a href="http://<%= @explorer %>/#/transfer/<%= tx %>"><%= tx %></a></li>
+  <li><a href="http://<%= @explorer %>/#/<%= tx[:path] %>/<%= tx[:hash] %>"><%= tx[:hash] %></a></li>
   <% end %>
 </ol>
