@@ -14,6 +14,7 @@ set :price, 40
 if settings.production?
   set :payment_address, 'NBCR2G-JL7VJF-3FKVI6-6SMZCG-4YBC6H-3BM2A6-LLTM'
   set :network_version, 2
+  set :explorer, 'chain.nem.ninja'
   set :nodes, [
     '62.75.251.134:7890',
     '62.75.163.236:7890',
@@ -27,6 +28,7 @@ if settings.production?
 else
   set :payment_address, 'TCQFU2-U2UR27-EYLADA-6FNE6K-Y7ONFM-7YH7ZY-REBS'
   set :network_version, 1
+  set :explorer, 'bob.nem.ninja:8765'
   set :nodes, [
     '37.187.70.29:7890',
     '104.128.226.60:7890',
@@ -140,17 +142,22 @@ post '/download' do
       tx['transaction']['message']['payload'] == @encoded_message[0]
     end
   end
-  @tx_list = []
-  @paid = []
   @transaction = @search.count > 1 ? 'transactions' : 'transaction'
 
   # Decide how to act depending on search results.
+  @explorer = settings.explorer
+  @tx_list = []
+  @paid = []
   if @search.empty?
     erb :tx_not_found
   else
     @search.each_with_index do |tx, index|
       @tx_list[index] = tx['meta']['hash']['data']
-      @paid << tx['transaction']['amount']
+      if tx['transaction'].has_key?('otherTrans')
+        @paid << tx['transaction']['otherTrans']['amount']
+      else
+        @paid << tx['transaction']['amount']
+      end
     end
     @paid = @paid.sum.to_f * 10**-6
     @difference = settings.price - @paid
