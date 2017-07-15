@@ -11,6 +11,8 @@ require 'sinatra'
 set :root, File.dirname(__FILE__)
 set :price, 40
 
+set :environment, :production
+
 if settings.production?
   set :payment_address, 'NBCR2G-JL7VJF-3FKVI6-6SMZCG-4YBC6H-3BM2A6-LLTM'
   set :network_version, 2
@@ -48,7 +50,7 @@ get '/' do
     if xem_price_btc.is_a? Net::HTTPSuccess
       (JSON.parse(xem_price_btc.body)['result']['Last'] * 10**8).to_i
     else
-      7000
+      5400
     end
 
   xbt_price_usd = Net::HTTP.get_response(
@@ -58,7 +60,7 @@ get '/' do
     if xbt_price_usd.is_a? Net::HTTPSuccess
       JSON.parse(xbt_price_usd.body)['result']['XXBTZUSD']['c'][0].to_f
     else
-      2500.00
+      2000.00
     end
 
   @xem_price_usd = (@xbt_price_last * 10**-8) * @xem_price_satoshis
@@ -135,29 +137,35 @@ post '/download' do
   # Search transactions for customer purchases.
   @id_hash = params[:id_hash]
   @encoded_message = @id_hash.unpack('H*')
-  @search = data.find_all do |tx|
-    if tx['transaction'].has_key?('otherTrans')
+  @search_results = data.find_all do |tx|
+    if tx['transaction'].key?('otherTrans')
       tx['transaction']['otherTrans']['message']['payload'] == @encoded_message[0]
     else
       tx['transaction']['message']['payload'] == @encoded_message[0]
     end
   end
-  @transaction = @search.count > 1 ? 'transactions' : 'transaction'
+  @transaction = @search_results.count > 1 ? 'transactions' : 'transaction'
 
   # Decide how to act depending on search results.
   @explorer = settings.explorer
-  @tx_list = []
+  @tx_list = [{}]
   @paid = []
-  if @search.empty?
+  if @search_results.empty?
     erb :tx_not_found
   else
-    @search.each_with_index do |tx, index|
-      @tx_list[index] = tx['meta']['hash']['data']
-      if tx['transaction'].has_key?('otherTrans')
+    @search_results.each_with_index do |tx, index|
+      tx_hash = tx['meta']['hash']['data']
+      if tx['transaction'].key?('otherTrans')
+        path = 'multisig'
         @paid << tx['transaction']['otherTrans']['amount']
       else
+        path = 'transfer'
         @paid << tx['transaction']['amount']
       end
+      @tx_list[index] = {
+        hash: tx_hash,
+        path: path
+      }
     end
     @paid = @paid.sum.to_f * 10**-6
     @difference = settings.price - @paid
