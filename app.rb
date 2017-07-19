@@ -11,30 +11,21 @@ require 'sinatra'
 set :root, File.dirname(__FILE__)
 set :price, 40
 
+# set :environment, :production
+
 if settings.production?
   set :payment_address, 'NBCR2G-JL7VJF-3FKVI6-6SMZCG-4YBC6H-3BM2A6-LLTM'
   set :network_version, 2
   set :explorer, 'chain.nem.ninja'
-  set :nodes, [
-    '62.75.251.134:7890',
-    '62.75.163.236:7890',
-    '85.25.36.97:7890',
-    '199.217.112.135:7890',
-    '108.61.182.27:7890',
-    '108.61.168.86:7890',
-    '104.238.161.61:7890',
-    '88.99.192.82:7890'
-  ]
-else
+elsif settings.development?
   set :payment_address, 'TCQFU2-U2UR27-EYLADA-6FNE6K-Y7ONFM-7YH7ZY-REBS'
   set :network_version, 1
   set :explorer, 'bob.nem.ninja:8765'
   set :nodes, [
-    '37.187.70.29:7890',
     '104.128.226.60:7890',
     '23.228.67.85:7890',
-    '50.3.87.123:7890',
     '192.3.61.243:7890',
+    '188.68.50.161:7890',
     '150.95.145.157:7890'
   ]
 end
@@ -45,24 +36,29 @@ get '/' do
     URI('https://bittrex.com/api/v1.1/public/getticker?market=btc-xem')
   )
   @xem_price_satoshis =
-    if xem_price_btc.is_a? Net::HTTPSuccess
+    begin
       (JSON.parse(xem_price_btc.body)['result']['Last'] * 10**8).to_i
-    else
-      5400
+    rescue
+      '[not available]'
     end
 
   xbt_price_usd = Net::HTTP.get_response(
     URI('https://api.kraken.com/0/public/Ticker?pair=XXBTZUSD')
   )
   @xbt_price_last =
-    if xbt_price_usd.is_a? Net::HTTPSuccess
+    begin
       JSON.parse(xbt_price_usd.body)['result']['XXBTZUSD']['c'][0].to_f
-    else
-      2000.00
+    rescue
+      0
     end
 
-  @xem_price_usd = (@xbt_price_last * 10**-8) * @xem_price_satoshis
-  @usd_price = @xem_price_usd * settings.price
+  begin
+    @xem_price_usd = (@xbt_price_last * 10**-8) * @xem_price_satoshis
+    @usd_price = @xem_price_usd * settings.price
+  rescue
+    @xem_price_usd = 0
+    @usd_price = 0
+  end
   erb :index
 end
 
@@ -99,20 +95,48 @@ post '/download' do
   node = ''
   @node_name = ''
 
-  settings.nodes.each do |node_address|
-    begin
-      node_info = ''
-      Timeout.timeout(2) do
-        node_info = Net::HTTP.get_response(
-          URI("http://#{node_address}/node/info")
-        )
+  # Mainnet
+  if settings.production?
+    nodes = Net::HTTP.get(URI('https://supernodes.nem.io/nodes'))
+    nodes_parsed = JSON.parse(nodes)['nodes']
+
+    nodes_parsed.each do |selected_node|
+      node_ip = selected_node['ip']
+      nis_port = selected_node['nisPort']
+      node = "#{node_ip}:#{nis_port}"
+      begin
+        node_status = ''
+        Timeout.timeout(1) do
+          node_status = Net::HTTP.get_response(
+            URI("http://#{node}/heartbeat")
+          )
+        end
+        next unless (node_status.is_a? Net::HTTPSuccess) &&
+                    (JSON.parse(node_status.body)['message'] == 'ok')
+        @node_name = selected_node['alias']
+        break
+      rescue
+        next
       end
-      next unless node_info.is_a? Net::HTTPSuccess
-      node = node_address
-      @node_name = JSON.parse(node_info.body)['identity']['name']
-      break
-    rescue
-      next
+    end
+
+  # Testnet
+  elsif settings.development?
+    settings.nodes.each do |selected_node|
+      begin
+        node_info = ''
+        Timeout.timeout(1) do
+          node_info = Net::HTTP.get_response(
+            URI("http://#{selected_node}/node/info")
+          )
+        end
+        next unless node_info.is_a? Net::HTTPSuccess
+        node = selected_node
+        @node_name = JSON.parse(node_info.body)['identity']['name']
+        break
+      rescue
+        next
+      end
     end
   end
 
@@ -135,24 +159,29 @@ post '/download' do
   # Search transactions for customer purchases.
   @id_hash = params[:id_hash]
   @encoded_message = @id_hash.unpack('H*')
+
   @search_results = data.find_all do |tx|
     if tx['transaction'].key?('otherTrans')
-      tx['transaction']['otherTrans']['message']['payload'] == @encoded_message[0]
+      tx['transaction']['otherTrans']['message']['payload'] ==
+        @encoded_message[0]
     else
       tx['transaction']['message']['payload'] == @encoded_message[0]
     end
   end
+
   @transaction = @search_results.count > 1 ? 'transactions' : 'transaction'
 
   # Decide how to act depending on search results.
   @explorer = settings.explorer
-  @tx_list = [{}]
+  @tx_list = []
   @paid = []
+
   if @search_results.empty?
     erb :tx_not_found
   else
     @search_results.each_with_index do |tx, index|
       tx_hash = tx['meta']['hash']['data']
+
       if tx['transaction'].key?('otherTrans')
         path = 'multisig'
         @paid << tx['transaction']['otherTrans']['amount']
@@ -160,13 +189,16 @@ post '/download' do
         path = 'transfer'
         @paid << tx['transaction']['amount']
       end
+
       @tx_list[index] = {
         hash: tx_hash,
         path: path
       }
     end
+
     @paid = @paid.sum.to_f * 10**-6
     @difference = settings.price - @paid
+
     if @paid < settings.price
       erb :low_payment
     else
@@ -176,9 +208,11 @@ post '/download' do
   end
 end
 
-post '/:download_link' do
-  signer = Aws::S3::Presigner.new
-  url =
+post '/download/:download_link' do
+  if params[:download_link] == params[:dl_link]
+    signer = Aws::S3::Presigner.new
+
+    url =
     if settings.production?
       signer.presigned_url(
         :get_object,
@@ -186,7 +220,7 @@ post '/:download_link' do
         key: 'Ochre - Beyond the Outer Loop.zip',
         expires_in: 300
       )
-    else
+    elsif settings.development?
       signer.presigned_url(
         :get_object,
         bucket: 'nemp3',
@@ -194,7 +228,54 @@ post '/:download_link' do
         expires_in: 300
       )
     end
-  redirect url
+
+    redirect url
+  else
+    not_found
+  end
+end
+
+get '/harvesting-space' do
+  @message = 'Hit the button to search for supernodes with free slots.'
+  @harvesting_space_list = []
+  erb :harvesting_space
+end
+
+post '/harvesting-space' do
+  nodes = Net::HTTP.get(URI('https://supernodes.nem.io/nodes'))
+  nodes_parsed = JSON.parse(nodes)['nodes']
+  free_slots_list = []
+
+  nodes_parsed.each do |selected_node|
+    node_ip = selected_node['ip']
+    nis_port = selected_node['nisPort']
+    node = "#{node_ip}:#{nis_port}"
+
+    harvesting_space_req = Net::HTTP.post_form(
+    URI("http://#{node}/account/unlocked/info"), {}
+    )
+    harvesting_space_response = JSON.parse(harvesting_space_req.body)
+    unlocked = harvesting_space_response['num-unlocked'].to_i
+    maximum = harvesting_space_response['max-unlocked'].to_i
+    free_slots = maximum - unlocked
+
+    if free_slots > 0
+      vacancy = {
+          name: selected_node['alias'],
+          ip: node_ip,
+          free_slots: free_slots
+        }
+      free_slots_list << vacancy
+    else
+      next
+    end
+
+    break if free_slots_list.count == 5
+  end
+
+  @message = 'There looks to be free slots on these supernodes (max. 5 shown):'
+  @harvesting_space_list = free_slots_list
+  erb :harvesting_space
 end
 
 not_found do
