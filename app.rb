@@ -213,21 +213,21 @@ post '/download/:download_link' do
     signer = Aws::S3::Presigner.new
 
     url =
-    if settings.production?
-      signer.presigned_url(
-        :get_object,
-        bucket: 'nemp3',
-        key: 'Ochre - Beyond the Outer Loop.zip',
-        expires_in: 300
-      )
-    elsif settings.development?
-      signer.presigned_url(
-        :get_object,
-        bucket: 'nemp3',
-        key: 'Empty.zip',
-        expires_in: 300
-      )
-    end
+      if settings.production?
+        signer.presigned_url(
+          :get_object,
+          bucket: 'nemp3',
+          key: 'Ochre - Beyond the Outer Loop.zip',
+          expires_in: 300
+        )
+      elsif settings.development?
+        signer.presigned_url(
+          :get_object,
+          bucket: 'nemp3',
+          key: 'Empty.zip',
+          expires_in: 300
+        )
+      end
 
     redirect url
   else
@@ -260,16 +260,13 @@ post '/harvesting-space' do
       maximum = harvesting_space_response['max-unlocked'].to_i
       free_slots = maximum - unlocked
 
-      if free_slots > 0
-        vacancy = {
-          name: selected_node['alias'],
-          ip: node_ip,
-          free_slots: free_slots
-        }
-        free_slots_list << vacancy
-      else
-        next
-      end
+      next unless free_slots.positive?
+      vacancy = {
+        name: selected_node['alias'],
+        ip: node_ip,
+        free_slots: free_slots
+      }
+      free_slots_list << vacancy
     rescue
       next
     end
