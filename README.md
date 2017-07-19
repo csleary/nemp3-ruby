@@ -4,15 +4,23 @@ NEMp3 is a Ruby/Sinatra web app that allows you to purchase music using the NEM 
 
 Please feel free to play with the testnet/dev version here: https://nemp3-testnet.herokuapp.com/
 
+I've hacked-up a harvesting space finder here: https://nemp3.herokuapp.com/harvesting-space
+It'll list the first five supernodes that it finds with free harvesting slots.
+
 If you wish to use NEMp3 on your own site to sell your own music/downloads, please note the following:
 
 - Change your payment address and price in the settings at the start of the app. I've set different addresses and nodes depending on the `RACK_ENV`, so you shouldn't need to automatically switch between mainnet/testnet addresses.
 
-- Change the download link at the end (in the `/:download_link` route). If you're using Amazon S3, then just change the bucket and filenames as required (your AWS credentials will be used if they're available as environment variables), and if using a raw download URL, just replace the whole route block:
+- Change the download link at the end (in the `/download/:download_link` route). If you're using Amazon S3, then just change the bucket and filenames as required (your AWS credentials will be used if they're available as environment variables), and if using a raw download URL, just replace the `url = ` block:
 
 ```ruby
-post '/:download_link' do
-  redirect https://domain/my-download.zip
+post '/download/:download_link' do
+  if params[:download_link] == params[:dl_link]
+    url = https://domain/my-download.zip # Change this.
+    redirect url
+  else
+    not_found
+  end
 end
 ```
 
