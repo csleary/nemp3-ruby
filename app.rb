@@ -68,6 +68,15 @@ post '/' do
   # Calculate customer ID hash and truncate it for cheaper tx fee.
   @id_hash = Digest::SHA256.hexdigest(params[:user_email] +
   ENV['NEMP3_SECRET'])[0, 31]
+
+  if settings.production?
+    return erb :nope if %w[
+      e99d585caed8ba280be7bca52b5b7d8
+      7da5cf2486b28e6703b33f5e479d8fb
+      91383bc8ade0d18cc5272a55db2dd72
+    ].include?(@id_hash)
+  end
+
   payment_data = {
     v: settings.network_version,
     type: 2,
