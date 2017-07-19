@@ -82,7 +82,7 @@ a, a:hover, a:active, a:visited, a:focus {
 .btn {
   border-radius: .25rem;
   border-width: 2px;
-  margin-top: 1rem;
+  margin: 1rem 0;
 }
 
 .btn-outline-primary {
