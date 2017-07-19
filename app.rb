@@ -236,8 +236,8 @@ post '/download/:download_link' do
 end
 
 get '/harvesting-space' do
-  @message = 'Hit the button to search for supernodes with free slots.
-  It will take a little while to query each node for free slots.'
+  @message = 'Hit the button to find supernodes with free slots.
+  It will take a little while to query each node.'
   @harvesting_space_list = []
   erb :harvesting_space
 end
