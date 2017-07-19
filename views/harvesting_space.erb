@@ -5,13 +5,18 @@
 <ol>
   <% @harvesting_space_list.each do |node| %>
   <li>
-    <%= node[:name] %>
-    [<%= node[:ip] %>] &bull;
-    <%= node[:free_slots] %>
-    free <% if node[:free_slots] > 1 %>slots<% else %>slot<% end %>.
+    <a href="https://supernodes.nem.io/details/<%= node[:id] %>">
+      <%= node[:name] %>
+    </a> &bull;
+    <%= node[:ip] %> &bull;
+    <%= node[:free_slots] %> free
+    <% if node[:free_slots] > 1 %>slots<% else %>slot<% end %>.
   </li>
   <% end %>
 </ol>
 <form class="please-wait-form" action="/harvesting-space" method="post">
-  <button class="btn btn-outline-primary btn-lg btn-block please-wait-button" type="submit">Check Nodes for Free Slots</button>
+  <button class="btn btn-outline-primary btn-lg btn-block please-wait-button"
+    type="submit">
+    Check Nodes for Free Slots
+  </button>
 </form>

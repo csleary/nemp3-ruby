@@ -236,7 +236,8 @@ post '/download/:download_link' do
 end
 
 get '/harvesting-space' do
-  @message = 'Hit the button to search for supernodes with free slots.'
+  @message = 'Hit the button to search for supernodes with free slots.
+  It will take a little while to query each node for free slots.'
   @harvesting_space_list = []
   erb :harvesting_space
 end
@@ -262,6 +263,7 @@ post '/harvesting-space' do
 
       next unless free_slots.positive?
       vacancy = {
+        id: selected_node['id'],
         name: selected_node['alias'],
         ip: node_ip,
         free_slots: free_slots

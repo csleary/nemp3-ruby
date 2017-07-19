@@ -4,8 +4,7 @@ NEMp3 is a Ruby/Sinatra web app that allows you to purchase music using the NEM 
 
 Please feel free to play with the testnet/dev version here: https://nemp3-testnet.herokuapp.com/
 
-I've hacked-up a harvesting space finder here: https://nemp3.herokuapp.com/harvesting-space
-It'll list the first five supernodes that it finds with free harvesting slots.
+I've hacked-up a harvesting space finder here: https://nemp3.herokuapp.com/harvesting-space. It'll list the first five supernodes that it finds with free harvesting slots.
 
 If you wish to use NEMp3 on your own site to sell your own music/downloads, please note the following:
 
