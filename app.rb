@@ -247,26 +247,30 @@ post '/harvesting-space' do
   free_slots_list = []
 
   nodes_parsed.each do |selected_node|
-    node_ip = selected_node['ip']
-    nis_port = selected_node['nisPort']
-    node = "#{node_ip}:#{nis_port}"
+    begin
+      node_ip = selected_node['ip']
+      nis_port = selected_node['nisPort']
+      node = "#{node_ip}:#{nis_port}"
 
-    harvesting_space_req = Net::HTTP.post_form(
-    URI("http://#{node}/account/unlocked/info"), {}
-    )
-    harvesting_space_response = JSON.parse(harvesting_space_req.body)
-    unlocked = harvesting_space_response['num-unlocked'].to_i
-    maximum = harvesting_space_response['max-unlocked'].to_i
-    free_slots = maximum - unlocked
+      harvesting_space_req = Net::HTTP.post_form(
+        URI("http://#{node}/account/unlocked/info"), {}
+      )
+      harvesting_space_response = JSON.parse(harvesting_space_req.body)
+      unlocked = harvesting_space_response['num-unlocked'].to_i
+      maximum = harvesting_space_response['max-unlocked'].to_i
+      free_slots = maximum - unlocked
 
-    if free_slots > 0
-      vacancy = {
+      if free_slots > 0
+        vacancy = {
           name: selected_node['alias'],
           ip: node_ip,
           free_slots: free_slots
         }
-      free_slots_list << vacancy
-    else
+        free_slots_list << vacancy
+      else
+        next
+      end
+    rescue
       next
     end
 

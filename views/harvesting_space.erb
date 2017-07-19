@@ -1,9 +1,15 @@
+<h2>Supernode Harvesting Slots</h2>
 <p>
   <%= @message %>
 </p>
 <ol>
   <% @harvesting_space_list.each do |node| %>
-  <li><%= node[:name] %> [<%= node[:ip] %>] &bull; <%= node[:free_slots] %> free slots.</li>
+  <li>
+    <%= node[:name] %>
+    [<%= node[:ip] %>] &bull;
+    <%= node[:free_slots] %>
+    free <% if node[:free_slots] > 1 %>slots<% else %>slot<% end %>.
+  </li>
   <% end %>
 </ol>
 <form class="please-wait-form" action="/harvesting-space" method="post">
