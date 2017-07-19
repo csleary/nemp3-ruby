@@ -5,22 +5,32 @@
 <div class="qr-code">
   <%= @qr %>
 </div>
+<h3>Manual Payment</h3>
 <p>
-  Alternatively, you can manually send your payment to this address:
+  If you can't scan a QR code, you can still make a payment manually as follows:
 </p>
+<h4>1. Enter Your ID Hash as Message</h4>
 <p>
-  <textarea class="payment-address" onclick="this.select()" readonly="readonly" rows="2"><%= settings.payment_address %></textarea>
+  You <strong>must</strong> include the hash string below in the message field when making your payment, as it's your unique purchase ID, linked to your email address, and stored on the blockchain as part of your transaction. This will be used to confirm that your purchase has successfully been made.
 </p>
+<p class="alert alert-warning" role="alert">
+  Your ID hash is essential to the use of NEMp3. Please don't forget to include this.
+</p>
+<textarea class="payment-message" onclick="this.select()" readonly="readonly" rows="2">
+  <%= @id_hash %>
+</textarea>
+<h4>2. Enter the Payment Amount and Address</h4>
 <p>
-  You <strong>must</strong> include the hash below in the message field when making payment, as it is your unique purchase ID, linked to your email address, and is stored on the blockchain as part of your transaction. This will be used to confirm that your purchase has successfully been made. It may take a minute for your payment to be confirmed by nodes on the network.
+  With your ID hash safely pasted into the message field, all that's left is to enter the payment amount and copy/paste the payment address:
 </p>
+<textarea class="payment-address" onclick="this.select()" readonly="readonly" rows="2">
+  <%= settings.payment_address %>
+</textarea>
+<h4>3. Send It!</h4>
 <p>
-  <textarea class="payment-message" onclick="this.select()" readonly="readonly" rows="2"><%= @id_hash %></textarea>
+  It may take a minute for your payment to be confirmed by nodes on the network, but once it's been confirmed, please continue.
 </p>
-<p>
-  All done? If your payment has been confirmed, please continue.
-</p>
-<form class="checkForPayment" action="/download" method="post">
+<form class="please-wait-form" action="/download" method="post">
   <input type="hidden" name="id_hash" value="<%= @id_hash %>">
-  <button type="submit" class="btn btn-outline-primary btn-lg btn-block paymentButton ">Next Step: Download</button>
+  <button type="submit" class="btn btn-outline-primary btn-lg btn-block please-wait-button ">Next Step: Download</button>
 </form>

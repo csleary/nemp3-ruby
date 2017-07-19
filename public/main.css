@@ -61,6 +61,10 @@ p:last-child {
   margin: 0;
 }
 
+h4 {
+  margin-top: 2rem;
+}
+
 ol {
   margin-bottom: 2rem;
 }
@@ -113,12 +117,12 @@ main .row {
 
 .payment-address,
 .payment-message {
-  background: #e1e1e1;
+  background: #e8e8e8;
   border: 0;
   border-radius: .25rem;
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: bold;
-  line-height: 2rem;
+  margin-bottom: 1rem;
   overflow: hidden;
   padding: .5rem 0;
   resize: none;
@@ -132,8 +136,8 @@ main .row {
 }
 
 .qr-code {
-  margin: 2rem auto;
-  max-width: 276px;
+  margin: 2rem auto 3rem;
+  max-width: 244px;
 }
 
 .email-form {
@@ -147,13 +151,9 @@ main .row {
   text-align: center;
 }
 
-.node-name {
-  font-weight: bold;
-}
-
+.node-name,
 .id-hash {
   font-weight: bold;
-  text-align: center;
 }
 
 .id-hash,
@@ -174,13 +174,20 @@ main .row {
   margin-bottom: 2rem;
 }
 
-.pleaseWait {
+.please-wait {
   cursor: progress !important;
 }
 
 .release-meta {
   font-weight: bold;
   margin-bottom: 4rem;
+}
+
+@media (min-width: 768px) {
+  .payment-address,
+  .payment-message {
+    height: 2.8rem;
+  }
 }
 
 @media (min-width: 576px) {
@@ -202,10 +209,5 @@ main .row {
 
   .cover-art {
     padding: 3rem;
-  }
-
-  .payment-address,
-  .payment-message {
-    height: 2.8rem;
   }
 }
