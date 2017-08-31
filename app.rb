@@ -9,7 +9,7 @@ require 'rqrcode'
 require 'sinatra'
 
 set :root, File.dirname(__FILE__)
-set :price, 40
+set :price, 30
 
 # set :environment, :production
 
