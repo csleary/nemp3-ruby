@@ -30,7 +30,7 @@
 <p>
   It may take a minute for your payment to be confirmed by nodes on the network, but once it's been confirmed, please continue.
 </p>
-<form class="please-wait-form" action="/download" method="post">
-  <input type="hidden" name="id_hash" value="<%= @id_hash %>">
+<form class="please-wait-form" action="/download" method="get">
+  <!-- <input type="hidden" name="id_hash" value="<%= @id_hash %>"> -->
   <button type="submit" class="btn btn-outline-primary btn-lg btn-block please-wait-button ">Next Step: Download</button>
 </form>
