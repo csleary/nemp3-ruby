@@ -8,6 +8,7 @@ require 'net/http'
 require 'rqrcode'
 require 'sinatra'
 
+enable :sessions
 set :root, File.dirname(__FILE__)
 set :price, 30
 
@@ -68,6 +69,7 @@ post '/' do
   # Calculate customer ID hash and truncate it for cheaper tx fee.
   @id_hash = Digest::SHA256.hexdigest(params[:user_email] +
   ENV['NEMP3_SECRET'])[0, 31]
+  session[:id_hash] = @id_hash
 
   if settings.production?
     return erb :nope if %w[
@@ -99,7 +101,7 @@ post '/' do
   erb :payment
 end
 
-post '/download' do
+get '/download' do
   # Connect to a node.
   node = ''
   @node_name = ''
@@ -166,7 +168,7 @@ post '/download' do
   end
 
   # Search transactions for customer purchases.
-  @id_hash = params[:id_hash]
+  @id_hash = session[:id_hash]
   @encoded_message = @id_hash.unpack('H*')
 
   @search_results = data.find_all do |tx|
