@@ -174,8 +174,6 @@ get '/download' do
   @search_results = data.find_all do |tx|
     begin
       if tx['transaction'].key?('otherTrans')
-        puts tx['transaction']['otherTrans']['message']['payload']
-        puts @encoded_message[0]
         tx['transaction']['otherTrans']['message']['payload'] == @encoded_message[0]
       else
         tx['transaction']['message']['payload'] == @encoded_message[0]
