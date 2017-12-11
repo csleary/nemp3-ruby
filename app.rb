@@ -172,11 +172,16 @@ get '/download' do
   @encoded_message = @id_hash.unpack('H*')
 
   @search_results = data.find_all do |tx|
-    if tx['transaction'].key?('otherTrans')
-      tx['transaction']['otherTrans']['message']['payload'] ==
-        @encoded_message[0]
-    else
-      tx['transaction']['message']['payload'] == @encoded_message[0]
+    begin
+      if tx['transaction'].key?('otherTrans')
+        puts tx['transaction']['otherTrans']['message']['payload']
+        puts @encoded_message[0]
+        tx['transaction']['otherTrans']['message']['payload'] == @encoded_message[0]
+      else
+        tx['transaction']['message']['payload'] == @encoded_message[0]
+      end
+    rescue
+      next
     end
   end
 
