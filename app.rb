@@ -10,7 +10,7 @@ require 'sinatra'
 
 enable :sessions
 set :root, File.dirname(__FILE__)
-set :price, 30
+set :price, 20
 
 # set :environment, :production
 
