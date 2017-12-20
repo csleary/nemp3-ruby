@@ -10,7 +10,11 @@ require 'sinatra'
 
 enable :sessions
 set :root, File.dirname(__FILE__)
-set :price, 20
+set :price, 12
+
+Aws.config.update({
+  region: 'us-east-2'
+})
 
 # set :environment, :production
 
