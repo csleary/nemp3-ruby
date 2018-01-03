@@ -1,6 +1,6 @@
 <h2>Payment</h2>
 <p>
-  Great! Please send your XEM payment to the address encoded in the QR code below. The minimum price is <strong><%= settings.price %> XEM</strong> (~$<%= sprintf '%.2f', @usd_price %> USD), but you can pay any amount, obviously. Pay less than the asking price and your download will not be available, but you can always make up the shortfall in several separate payments (though you will pay more in transaction fees by doing this). You'll be advised on the exact value left to pay when we check for your payments in the next step.
+  Great! Please send your XEM payment to the address encoded in the QR code below. The minimum price is <strong><%= sprintf '%.2f', @price %> XEM</strong> (~$<%= sprintf '%.0f', @usd_price %> USD), but you can pay any amount, obviously. Pay less than the asking price and your download will not be available, but you can always make up the shortfall in several separate payments (though you will pay more in transaction fees by doing this). You'll be advised on the exact value left to pay when we check for your payments in the next step.
 </p>
 <div class="qr-code">
   <%= @qr %>

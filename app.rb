@@ -10,7 +10,8 @@ require 'sinatra'
 
 enable :sessions
 set :root, File.dirname(__FILE__)
-set :price, 12
+# set :price, 6
+set :price_usd, 8 # Album price in USD (will now peg XEM price to this).
 
 Aws.config.update({
   region: 'us-east-2'
@@ -19,7 +20,7 @@ Aws.config.update({
 # set :environment, :production
 
 if settings.production?
-  set :payment_address, 'NBCR2G-JL7VJF-3FKVI6-6SMZCG-4YBC6H-3BM2A6-LLTM'
+  set :payment_address, 'NBQGRG-QTZ4A4-6TKN7O-SOKE62-XGL6OW-EEHAIX-ZQPD'
   set :network_version, 2
   set :explorer, 'chain.nem.ninja'
 elsif settings.development?
@@ -59,7 +60,11 @@ get '/' do
 
   begin
     @xem_price_usd = (@xbt_price_last * 10**-8) * @xem_price_satoshis
-    @usd_price = @xem_price_usd * settings.price
+    @usd_price = settings.price_usd
+    # @usd_price = @xem_price_usd * settings.price
+    @price = (settings.price_usd / @xem_price_usd).round(2)
+    session[:price] = @price
+
   rescue
     @xem_price_usd = 0
     @usd_price = 0
@@ -69,6 +74,7 @@ end
 
 post '/' do
   @usd_price = params[:usd_price]
+  @price = session[:price]
 
   # Calculate customer ID hash and truncate it for cheaper tx fee.
   @id_hash = Digest::SHA256.hexdigest(params[:user_email] +
@@ -88,7 +94,7 @@ post '/' do
     type: 2,
     data: {
       addr: settings.payment_address.delete('-'),
-      amount: settings.price * 10**6,
+      amount: @price * 10**6,
       msg: @id_hash
     }
   }
@@ -109,6 +115,7 @@ get '/download' do
   # Connect to a node.
   node = ''
   @node_name = ''
+  @price = session[:price]
 
   # Mainnet
   if settings.production?
@@ -215,9 +222,9 @@ get '/download' do
     end
 
     @paid = @paid.sum.to_f * 10**-6
-    @difference = settings.price - @paid
+    @difference = session[:price] - @paid
 
-    if @paid < settings.price
+    if @paid < session[:price]
       erb :low_payment
     else
       @download_link = Digest::SHA256.hexdigest(DateTime.now.strftime('%s'))
