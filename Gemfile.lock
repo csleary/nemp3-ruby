@@ -26,7 +26,7 @@ GEM
     powerpack (0.1.2)
     puma (4.3.11)
       nio4r (~> 2.0)
-    rack (2.2.2)
+    rack (2.2.3)
     rack-protection (2.0.5)
       rack
     rainbow (3.0.0)
